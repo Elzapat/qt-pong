@@ -1,0 +1,60 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-DQT_CORE_LIB",
+      "-DQT_GUI_LIB",
+      "-DQT_NO_DEBUG",
+      "-DQT_WIDGETS_LIB",
+      "-I/home/morgan/Programmation/Projects/qt-pong/qt-pong_autogen/include",
+      "-isystem",
+      "/usr/include/qt",
+      "-isystem",
+      "/usr/include/qt/QtWidgets",
+      "-isystem",
+      "/usr/include/qt/QtGui",
+      "-isystem",
+      "/usr/include/qt/QtCore",
+      "-isystem",
+      "/usr/lib/qt/mkspecs/linux-g++",
+      "-fPIC",
+      "-std=gnu++11",
+      "-o",
+      "CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o",
+      "-c",
+      "/home/morgan/Programmation/Projects/qt-pong/qt-pong_autogen/mocs_compilation.cpp"
+    ],
+    "directory": "/home/morgan/Programmation/Projects/qt-pong",
+    "file": "/home/morgan/Programmation/Projects/qt-pong/qt-pong_autogen/mocs_compilation.cpp",
+    "output": "/home/morgan/Programmation/Projects/qt-pong/CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-DQT_CORE_LIB",
+      "-DQT_GUI_LIB",
+      "-DQT_NO_DEBUG",
+      "-DQT_WIDGETS_LIB",
+      "-I/home/morgan/Programmation/Projects/qt-pong/qt-pong_autogen/include",
+      "-isystem",
+      "/usr/include/qt",
+      "-isystem",
+      "/usr/include/qt/QtWidgets",
+      "-isystem",
+      "/usr/include/qt/QtGui",
+      "-isystem",
+      "/usr/include/qt/QtCore",
+      "-isystem",
+      "/usr/lib/qt/mkspecs/linux-g++",
+      "-fPIC",
+      "-std=gnu++11",
+      "-o",
+      "CMakeFiles/qt-pong.dir/src/main.cpp.o",
+      "-c",
+      "/home/morgan/Programmation/Projects/qt-pong/src/main.cpp"
+    ],
+    "directory": "/home/morgan/Programmation/Projects/qt-pong",
+    "file": "/home/morgan/Programmation/Projects/qt-pong/src/main.cpp",
+    "output": "/home/morgan/Programmation/Projects/qt-pong/CMakeFiles/qt-pong.dir/src/main.cpp.o"
+  }
+]
