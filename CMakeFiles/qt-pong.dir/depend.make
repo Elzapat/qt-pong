@@ -24,6 +24,7 @@ CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o: /usr/include/qt/Q
 CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o: /usr/include/qt/QtCore/QMetaType
 CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o: /usr/include/qt/QtCore/QObject
 CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o: /usr/include/qt/QtCore/QPointF
+CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o: /usr/include/qt/QtCore/QRandomGenerator
 CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o: /usr/include/qt/QtCore/QRect
 CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o: /usr/include/qt/QtCore/QScopedPointer
 CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o: /usr/include/qt/QtCore/QSettings
@@ -494,6 +495,7 @@ CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o: /usr/include/qt/Q
 CMakeFiles/qt-pong.dir/src/ball.cpp.o: include/ball.h
 CMakeFiles/qt-pong.dir/src/ball.cpp.o: include/config.h
 CMakeFiles/qt-pong.dir/src/ball.cpp.o: include/paddle.h
+CMakeFiles/qt-pong.dir/src/ball.cpp.o: include/player.h
 CMakeFiles/qt-pong.dir/src/ball.cpp.o: src/ball.cpp
 CMakeFiles/qt-pong.dir/src/ball.cpp.o: /usr/include/qt/QtCore/QDataStream
 CMakeFiles/qt-pong.dir/src/ball.cpp.o: /usr/include/qt/QtCore/QDeadlineTimer
@@ -504,6 +506,7 @@ CMakeFiles/qt-pong.dir/src/ball.cpp.o: /usr/include/qt/QtCore/QMargins
 CMakeFiles/qt-pong.dir/src/ball.cpp.o: /usr/include/qt/QtCore/QMetaType
 CMakeFiles/qt-pong.dir/src/ball.cpp.o: /usr/include/qt/QtCore/QObject
 CMakeFiles/qt-pong.dir/src/ball.cpp.o: /usr/include/qt/QtCore/QPointF
+CMakeFiles/qt-pong.dir/src/ball.cpp.o: /usr/include/qt/QtCore/QRandomGenerator
 CMakeFiles/qt-pong.dir/src/ball.cpp.o: /usr/include/qt/QtCore/QRect
 CMakeFiles/qt-pong.dir/src/ball.cpp.o: /usr/include/qt/QtCore/QScopedPointer
 CMakeFiles/qt-pong.dir/src/ball.cpp.o: /usr/include/qt/QtCore/QSettings
@@ -1059,6 +1062,7 @@ CMakeFiles/qt-pong.dir/src/main.cpp.o: /usr/include/qt/QtCore/QMargins
 CMakeFiles/qt-pong.dir/src/main.cpp.o: /usr/include/qt/QtCore/QMetaType
 CMakeFiles/qt-pong.dir/src/main.cpp.o: /usr/include/qt/QtCore/QObject
 CMakeFiles/qt-pong.dir/src/main.cpp.o: /usr/include/qt/QtCore/QPointF
+CMakeFiles/qt-pong.dir/src/main.cpp.o: /usr/include/qt/QtCore/QRandomGenerator
 CMakeFiles/qt-pong.dir/src/main.cpp.o: /usr/include/qt/QtCore/QRect
 CMakeFiles/qt-pong.dir/src/main.cpp.o: /usr/include/qt/QtCore/QScopedPointer
 CMakeFiles/qt-pong.dir/src/main.cpp.o: /usr/include/qt/QtCore/QSettings
@@ -1544,6 +1548,7 @@ CMakeFiles/qt-pong.dir/src/main_window.cpp.o: /usr/include/qt/QtCore/QMargins
 CMakeFiles/qt-pong.dir/src/main_window.cpp.o: /usr/include/qt/QtCore/QMetaType
 CMakeFiles/qt-pong.dir/src/main_window.cpp.o: /usr/include/qt/QtCore/QObject
 CMakeFiles/qt-pong.dir/src/main_window.cpp.o: /usr/include/qt/QtCore/QPointF
+CMakeFiles/qt-pong.dir/src/main_window.cpp.o: /usr/include/qt/QtCore/QRandomGenerator
 CMakeFiles/qt-pong.dir/src/main_window.cpp.o: /usr/include/qt/QtCore/QRect
 CMakeFiles/qt-pong.dir/src/main_window.cpp.o: /usr/include/qt/QtCore/QScopedPointer
 CMakeFiles/qt-pong.dir/src/main_window.cpp.o: /usr/include/qt/QtCore/QSettings
@@ -2979,6 +2984,7 @@ CMakeFiles/qt-pong.dir/src/scene.cpp.o: /usr/include/qt/QtCore/QMargins
 CMakeFiles/qt-pong.dir/src/scene.cpp.o: /usr/include/qt/QtCore/QMetaType
 CMakeFiles/qt-pong.dir/src/scene.cpp.o: /usr/include/qt/QtCore/QObject
 CMakeFiles/qt-pong.dir/src/scene.cpp.o: /usr/include/qt/QtCore/QPointF
+CMakeFiles/qt-pong.dir/src/scene.cpp.o: /usr/include/qt/QtCore/QRandomGenerator
 CMakeFiles/qt-pong.dir/src/scene.cpp.o: /usr/include/qt/QtCore/QRect
 CMakeFiles/qt-pong.dir/src/scene.cpp.o: /usr/include/qt/QtCore/QScopedPointer
 CMakeFiles/qt-pong.dir/src/scene.cpp.o: /usr/include/qt/QtCore/QSettings
@@ -3460,6 +3466,7 @@ CMakeFiles/qt-pong.dir/src/view.cpp.o: /usr/include/qt/QtCore/QMargins
 CMakeFiles/qt-pong.dir/src/view.cpp.o: /usr/include/qt/QtCore/QMetaType
 CMakeFiles/qt-pong.dir/src/view.cpp.o: /usr/include/qt/QtCore/QObject
 CMakeFiles/qt-pong.dir/src/view.cpp.o: /usr/include/qt/QtCore/QPointF
+CMakeFiles/qt-pong.dir/src/view.cpp.o: /usr/include/qt/QtCore/QRandomGenerator
 CMakeFiles/qt-pong.dir/src/view.cpp.o: /usr/include/qt/QtCore/QRect
 CMakeFiles/qt-pong.dir/src/view.cpp.o: /usr/include/qt/QtCore/QScopedPointer
 CMakeFiles/qt-pong.dir/src/view.cpp.o: /usr/include/qt/QtCore/QSettings

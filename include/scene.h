@@ -18,6 +18,7 @@ class Scene : public QGraphicsScene {
 
     public slots:
         void update();
+        void player_scored(quint8 player);
 
     private:
         Ball* ball;

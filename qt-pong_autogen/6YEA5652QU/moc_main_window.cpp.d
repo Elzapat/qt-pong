@@ -237,6 +237,7 @@
   /usr/include/qt/QtCore/QMetaType \
   /usr/include/qt/QtCore/QObject \
   /usr/include/qt/QtCore/QPointF \
+  /usr/include/qt/QtCore/QRandomGenerator \
   /usr/include/qt/QtCore/QRect \
   /usr/include/qt/QtCore/QScopedPointer \
   /usr/include/qt/QtCore/QSettings \

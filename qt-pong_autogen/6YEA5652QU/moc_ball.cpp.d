@@ -2,6 +2,7 @@
   /home/morgan/Programmation/Projects/qt-pong/qt-pong_autogen/moc_predefs.h \
   /home/morgan/Programmation/Projects/qt-pong/include/config.h \
   /home/morgan/Programmation/Projects/qt-pong/include/paddle.h \
+  /home/morgan/Programmation/Projects/qt-pong/include/player.h \
   /usr/include/GL/gl.h \
   /usr/include/assert.h \
   /usr/include/bits/cpu-set.h \
@@ -233,6 +234,7 @@
   /usr/include/qt/QtCore/QMetaType \
   /usr/include/qt/QtCore/QObject \
   /usr/include/qt/QtCore/QPointF \
+  /usr/include/qt/QtCore/QRandomGenerator \
   /usr/include/qt/QtCore/QRect \
   /usr/include/qt/QtCore/QScopedPointer \
   /usr/include/qt/QtCore/QSettings \

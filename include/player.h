@@ -16,13 +16,14 @@ class Player : public QObject {
     public:
         Player(PlayerPosition pos, bool computer = false);
         ~Player();
-        void update_position();
+        void update_paddle();
         void set_up_pressed(bool is_pressed);
         void set_down_pressed(bool is_pressed);
         void update();
         void update_score_text();
         Paddle* paddle() const;
         QGraphicsTextItem* score_text() const;
+        void scored();
 
     private:
         Paddle* m_paddle;

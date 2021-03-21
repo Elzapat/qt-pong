@@ -6,6 +6,7 @@ Scene::Scene(QObject* parent) : QGraphicsScene(parent) {
 
     // Instanciating the game objects
     ball = new Ball;
+    ball->reset(PlayerPosition::Left);
     p1 = new Player(PlayerPosition::Left);
     p2 = new Player(PlayerPosition::Right);
 
@@ -26,6 +27,9 @@ Scene::Scene(QObject* parent) : QGraphicsScene(parent) {
     connect(update_timer, SIGNAL(timeout()), this, SLOT(update()));
     update_timer->start((1.f / Config::get<qreal>("fps")) * 1000.f);
 
+    // Connect to the signal the ball emits when a player scores
+    connect(ball, SIGNAL(player_scored(quint8)), this, SLOT(player_scored(quint8)));
+
     // QGraphicsPixmapItem* qdpi = new QGraphicsPixmapItem(QPixmap("assets/images/uno.png"));
     // this->addItem(qdpi);
 }
@@ -44,9 +48,19 @@ void Scene::update() {
     p2->update();
 }
 
+void Scene::player_scored(quint8 player) {
+    if (player == 1) {
+        p1->scored(); 
+        ball->reset(PlayerPosition::Left);
+    } else {
+        p2->scored();
+        ball->reset(PlayerPosition::Right);
+    }
+}
+
 void Scene::resize_event() {
-    p1->update_position();
-    p2->update_position();
+    p1->update_paddle();
+    p2->update_paddle();
     p1->update_score_text();
     p2->update_score_text();
     update_middle_line();
@@ -65,6 +79,11 @@ void Scene::keyPressEvent(QKeyEvent* event) {
             break;
         case Qt::Key_L:
             p2->set_down_pressed(true);
+            break;
+        case Qt::Key_Space:
+            if (ball->is_moving()) break;
+            ball->launch();
+            break;
     }
 }
 
