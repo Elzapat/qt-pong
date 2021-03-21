@@ -29,8 +29,6 @@ void Ball::collision(Paddle* p1, Paddle* p2) {
     // Check if the ball is colliding with any of the two player paddles
     // If so, send it back with a different angle depending
     // on where the ball collided with the paddle
-    quint16 board_width = Config::get<quint16>("board_width");
-    quint16 ball_width = Config::get<quint16>("ball_width");
     if (this->collidesWithItem(p1)) {
         generate_new_angle(p1);
     } else if (this->collidesWithItem(p2)) {

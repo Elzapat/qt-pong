@@ -14,10 +14,12 @@ Scene::Scene(QObject* parent) : QGraphicsScene(parent) {
     setup_middle_line();
 
     // Adding the game objects to the scene
-    this->addItem(ball);
     this->addItem(p1->paddle());
     this->addItem(p2->paddle());
+    this->addItem(p1->score_text());
+    this->addItem(p2->score_text());
     this->addItem(middle_line);
+    this->addItem(ball);
 
     // Timer which is going to update every game object each frame
     QTimer* update_timer = new QTimer(this);
@@ -45,6 +47,9 @@ void Scene::update() {
 void Scene::resize_event() {
     p1->update_position();
     p2->update_position();
+    p1->update_score_text();
+    p2->update_score_text();
+    update_middle_line();
 }
 
 void Scene::keyPressEvent(QKeyEvent* event) {
@@ -85,8 +90,8 @@ void Scene::setup_middle_line() {
     QPen pen;
 
     pen.setWidth(5);
-    pen.setDashOffset(5);
-    pen.setBrush((QBrush)Qt::gray);
+    pen.setDashPattern({ 5, 3 });
+    pen.setBrush((QBrush)Qt::lightGray);
 
     quint16 b_h = Config::get<quint16>("board_height");
     middle_line->setLine(0, -b_h / 2, 0, b_h / 2);
@@ -94,5 +99,6 @@ void Scene::setup_middle_line() {
 }
 
 void Scene::update_middle_line() {
-
+    quint16 b_h = Config::get<quint16>("board_height");
+    middle_line->setLine(0, -b_h / 2, 0, b_h / 2);
 }

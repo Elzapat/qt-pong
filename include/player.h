@@ -17,10 +17,12 @@ class Player : public QObject {
         Player(PlayerPosition pos, bool computer = false);
         ~Player();
         void update_position();
-        Paddle* paddle();
         void set_up_pressed(bool is_pressed);
         void set_down_pressed(bool is_pressed);
         void update();
+        void update_score_text();
+        Paddle* paddle() const;
+        QGraphicsTextItem* score_text() const;
 
     private:
         Paddle* m_paddle;
@@ -29,6 +31,8 @@ class Player : public QObject {
         bool is_computer;
         bool up_pressed;
         bool down_pressed;
+        QGraphicsTextItem* m_score_text;
+        void setup_score_text();
 };
 
 #endif

@@ -25,6 +25,7 @@ class Scene : public QGraphicsScene {
         Player* p2;
         QGraphicsLineItem* middle_line;
         void setup_middle_line();
+        void update_middle_line();
 };
 
 #endif

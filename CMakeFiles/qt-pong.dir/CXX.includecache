@@ -6,20 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/morgan/Programmation/Projects/qt-pong/include/ball.h
-QtWidgets
--
-QtMath
--
-QDebug
--
-QDataStream
--
-config.h
-/home/morgan/Programmation/Projects/qt-pong/include/config.h
-paddle.h
-/home/morgan/Programmation/Projects/qt-pong/include/paddle.h
-
 /home/morgan/Programmation/Projects/qt-pong/include/config.h
 QDataStream
 -
@@ -40,9 +26,17 @@ QDataStream
 config.h
 /home/morgan/Programmation/Projects/qt-pong/include/config.h
 
-/home/morgan/Programmation/Projects/qt-pong/src/ball.cpp
-../include/ball.h
-/home/morgan/Programmation/Projects/qt-pong/include/ball.h
+/home/morgan/Programmation/Projects/qt-pong/include/player.h
+QObject
+-
+paddle.h
+/home/morgan/Programmation/Projects/qt-pong/include/paddle.h
+config.h
+/home/morgan/Programmation/Projects/qt-pong/include/config.h
+
+/home/morgan/Programmation/Projects/qt-pong/src/player.cpp
+../include/player.h
+/home/morgan/Programmation/Projects/qt-pong/include/player.h
 
 /usr/include/qt/QtCore/QDataStream
 qdatastream.h
@@ -485,10 +479,6 @@ qtcoreversion.h
 /usr/include/qt/QtCore/qtcoreversion.h
 
 /usr/include/qt/QtCore/QtCoreDepends
-
-/usr/include/qt/QtCore/QtMath
-qmath.h
-/usr/include/qt/QtCore/qmath.h
 
 /usr/include/qt/QtCore/qabstractanimation.h
 QtCore/qobject.h
