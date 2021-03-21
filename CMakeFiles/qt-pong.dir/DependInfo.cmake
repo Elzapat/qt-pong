@@ -5,8 +5,14 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/morgan/Programmation/Projects/qt-pong/qt-pong_autogen/mocs_compilation.cpp" "/home/morgan/Programmation/Projects/qt-pong/CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o"
+  "/home/morgan/Programmation/Projects/qt-pong/src/ball.cpp" "/home/morgan/Programmation/Projects/qt-pong/CMakeFiles/qt-pong.dir/src/ball.cpp.o"
+  "/home/morgan/Programmation/Projects/qt-pong/src/config.cpp" "/home/morgan/Programmation/Projects/qt-pong/CMakeFiles/qt-pong.dir/src/config.cpp.o"
   "/home/morgan/Programmation/Projects/qt-pong/src/main.cpp" "/home/morgan/Programmation/Projects/qt-pong/CMakeFiles/qt-pong.dir/src/main.cpp.o"
   "/home/morgan/Programmation/Projects/qt-pong/src/main_window.cpp" "/home/morgan/Programmation/Projects/qt-pong/CMakeFiles/qt-pong.dir/src/main_window.cpp.o"
+  "/home/morgan/Programmation/Projects/qt-pong/src/paddle.cpp" "/home/morgan/Programmation/Projects/qt-pong/CMakeFiles/qt-pong.dir/src/paddle.cpp.o"
+  "/home/morgan/Programmation/Projects/qt-pong/src/player.cpp" "/home/morgan/Programmation/Projects/qt-pong/CMakeFiles/qt-pong.dir/src/player.cpp.o"
+  "/home/morgan/Programmation/Projects/qt-pong/src/scene.cpp" "/home/morgan/Programmation/Projects/qt-pong/CMakeFiles/qt-pong.dir/src/scene.cpp.o"
+  "/home/morgan/Programmation/Projects/qt-pong/src/view.cpp" "/home/morgan/Programmation/Projects/qt-pong/CMakeFiles/qt-pong.dir/src/view.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

@@ -1,21 +1,20 @@
 #include "../include/main_window.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
-    main_widget = new QWidget;
-    QHBoxLayout* main_qbl = new QHBoxLayout;
-    main_widget->setLayout(main_qbl);
-    this->setCentralWidget(main_widget);
-
-    main_qbl->addWidget(main_widget);
+    this->setWindowState(Qt::WindowMaximized);
+    this->setMinimumSize(800, 600);
 
     file_menu = menuBar()->addMenu(tr("File"));
+    config_menu = menuBar()->addMenu(tr("Config"));
+    help_menu = menuBar()->addMenu(tr("Help"));
+
+    Scene* scene = new Scene(this);
+    view = new View(scene, this);
+
+    Config::set("board_width", view->width());
+    Config::set("board_height", view->height());
+
+    this->setCentralWidget(view);
 }
 
 MainWindow::~MainWindow() {}
-
-QGroupBox* MainWindow::build_group_box_control() {
-    QGroupBox* qgb = new QGroupBox(tr("Control"));
-    return qgb;
-}
-
-https://stackoverflow.com/questions/47471629/fail-to-use-q-object-macro-in-cmake-project

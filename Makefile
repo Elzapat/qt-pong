@@ -182,6 +182,60 @@ qt-pong_autogen/mocs_compilation.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.s
 .PHONY : qt-pong_autogen/mocs_compilation.cpp.s
 
+src/ball.o: src/ball.cpp.o
+
+.PHONY : src/ball.o
+
+# target to build an object file
+src/ball.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/ball.cpp.o
+.PHONY : src/ball.cpp.o
+
+src/ball.i: src/ball.cpp.i
+
+.PHONY : src/ball.i
+
+# target to preprocess a source file
+src/ball.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/ball.cpp.i
+.PHONY : src/ball.cpp.i
+
+src/ball.s: src/ball.cpp.s
+
+.PHONY : src/ball.s
+
+# target to generate assembly for a file
+src/ball.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/ball.cpp.s
+.PHONY : src/ball.cpp.s
+
+src/config.o: src/config.cpp.o
+
+.PHONY : src/config.o
+
+# target to build an object file
+src/config.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/config.cpp.o
+.PHONY : src/config.cpp.o
+
+src/config.i: src/config.cpp.i
+
+.PHONY : src/config.i
+
+# target to preprocess a source file
+src/config.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/config.cpp.i
+.PHONY : src/config.cpp.i
+
+src/config.s: src/config.cpp.s
+
+.PHONY : src/config.s
+
+# target to generate assembly for a file
+src/config.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/config.cpp.s
+.PHONY : src/config.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -236,6 +290,114 @@ src/main_window.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/main_window.cpp.s
 .PHONY : src/main_window.cpp.s
 
+src/paddle.o: src/paddle.cpp.o
+
+.PHONY : src/paddle.o
+
+# target to build an object file
+src/paddle.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/paddle.cpp.o
+.PHONY : src/paddle.cpp.o
+
+src/paddle.i: src/paddle.cpp.i
+
+.PHONY : src/paddle.i
+
+# target to preprocess a source file
+src/paddle.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/paddle.cpp.i
+.PHONY : src/paddle.cpp.i
+
+src/paddle.s: src/paddle.cpp.s
+
+.PHONY : src/paddle.s
+
+# target to generate assembly for a file
+src/paddle.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/paddle.cpp.s
+.PHONY : src/paddle.cpp.s
+
+src/player.o: src/player.cpp.o
+
+.PHONY : src/player.o
+
+# target to build an object file
+src/player.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/player.cpp.o
+.PHONY : src/player.cpp.o
+
+src/player.i: src/player.cpp.i
+
+.PHONY : src/player.i
+
+# target to preprocess a source file
+src/player.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/player.cpp.i
+.PHONY : src/player.cpp.i
+
+src/player.s: src/player.cpp.s
+
+.PHONY : src/player.s
+
+# target to generate assembly for a file
+src/player.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/player.cpp.s
+.PHONY : src/player.cpp.s
+
+src/scene.o: src/scene.cpp.o
+
+.PHONY : src/scene.o
+
+# target to build an object file
+src/scene.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/scene.cpp.o
+.PHONY : src/scene.cpp.o
+
+src/scene.i: src/scene.cpp.i
+
+.PHONY : src/scene.i
+
+# target to preprocess a source file
+src/scene.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/scene.cpp.i
+.PHONY : src/scene.cpp.i
+
+src/scene.s: src/scene.cpp.s
+
+.PHONY : src/scene.s
+
+# target to generate assembly for a file
+src/scene.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/scene.cpp.s
+.PHONY : src/scene.cpp.s
+
+src/view.o: src/view.cpp.o
+
+.PHONY : src/view.o
+
+# target to build an object file
+src/view.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/view.cpp.o
+.PHONY : src/view.cpp.o
+
+src/view.i: src/view.cpp.i
+
+.PHONY : src/view.i
+
+# target to preprocess a source file
+src/view.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/view.cpp.i
+.PHONY : src/view.cpp.i
+
+src/view.s: src/view.cpp.s
+
+.PHONY : src/view.s
+
+# target to generate assembly for a file
+src/view.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-pong.dir/build.make CMakeFiles/qt-pong.dir/src/view.cpp.s
+.PHONY : src/view.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -249,12 +411,30 @@ help:
 	@echo "... qt-pong_autogen/mocs_compilation.o"
 	@echo "... qt-pong_autogen/mocs_compilation.i"
 	@echo "... qt-pong_autogen/mocs_compilation.s"
+	@echo "... src/ball.o"
+	@echo "... src/ball.i"
+	@echo "... src/ball.s"
+	@echo "... src/config.o"
+	@echo "... src/config.i"
+	@echo "... src/config.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
 	@echo "... src/main_window.o"
 	@echo "... src/main_window.i"
 	@echo "... src/main_window.s"
+	@echo "... src/paddle.o"
+	@echo "... src/paddle.i"
+	@echo "... src/paddle.s"
+	@echo "... src/player.o"
+	@echo "... src/player.i"
+	@echo "... src/player.s"
+	@echo "... src/scene.o"
+	@echo "... src/scene.i"
+	@echo "... src/scene.s"
+	@echo "... src/view.o"
+	@echo "... src/view.i"
+	@echo "... src/view.s"
 .PHONY : help
 
 

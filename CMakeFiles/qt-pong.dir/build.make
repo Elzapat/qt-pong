@@ -115,11 +115,95 @@ CMakeFiles/qt-pong.dir/src/main_window.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qt-pong.dir/src/main_window.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/morgan/Programmation/Projects/qt-pong/src/main_window.cpp -o CMakeFiles/qt-pong.dir/src/main_window.cpp.s
 
+CMakeFiles/qt-pong.dir/src/scene.cpp.o: CMakeFiles/qt-pong.dir/flags.make
+CMakeFiles/qt-pong.dir/src/scene.cpp.o: src/scene.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/morgan/Programmation/Projects/qt-pong/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/qt-pong.dir/src/scene.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/qt-pong.dir/src/scene.cpp.o -c /home/morgan/Programmation/Projects/qt-pong/src/scene.cpp
+
+CMakeFiles/qt-pong.dir/src/scene.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qt-pong.dir/src/scene.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/morgan/Programmation/Projects/qt-pong/src/scene.cpp > CMakeFiles/qt-pong.dir/src/scene.cpp.i
+
+CMakeFiles/qt-pong.dir/src/scene.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qt-pong.dir/src/scene.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/morgan/Programmation/Projects/qt-pong/src/scene.cpp -o CMakeFiles/qt-pong.dir/src/scene.cpp.s
+
+CMakeFiles/qt-pong.dir/src/ball.cpp.o: CMakeFiles/qt-pong.dir/flags.make
+CMakeFiles/qt-pong.dir/src/ball.cpp.o: src/ball.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/morgan/Programmation/Projects/qt-pong/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/qt-pong.dir/src/ball.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/qt-pong.dir/src/ball.cpp.o -c /home/morgan/Programmation/Projects/qt-pong/src/ball.cpp
+
+CMakeFiles/qt-pong.dir/src/ball.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qt-pong.dir/src/ball.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/morgan/Programmation/Projects/qt-pong/src/ball.cpp > CMakeFiles/qt-pong.dir/src/ball.cpp.i
+
+CMakeFiles/qt-pong.dir/src/ball.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qt-pong.dir/src/ball.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/morgan/Programmation/Projects/qt-pong/src/ball.cpp -o CMakeFiles/qt-pong.dir/src/ball.cpp.s
+
+CMakeFiles/qt-pong.dir/src/config.cpp.o: CMakeFiles/qt-pong.dir/flags.make
+CMakeFiles/qt-pong.dir/src/config.cpp.o: src/config.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/morgan/Programmation/Projects/qt-pong/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/qt-pong.dir/src/config.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/qt-pong.dir/src/config.cpp.o -c /home/morgan/Programmation/Projects/qt-pong/src/config.cpp
+
+CMakeFiles/qt-pong.dir/src/config.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qt-pong.dir/src/config.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/morgan/Programmation/Projects/qt-pong/src/config.cpp > CMakeFiles/qt-pong.dir/src/config.cpp.i
+
+CMakeFiles/qt-pong.dir/src/config.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qt-pong.dir/src/config.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/morgan/Programmation/Projects/qt-pong/src/config.cpp -o CMakeFiles/qt-pong.dir/src/config.cpp.s
+
+CMakeFiles/qt-pong.dir/src/paddle.cpp.o: CMakeFiles/qt-pong.dir/flags.make
+CMakeFiles/qt-pong.dir/src/paddle.cpp.o: src/paddle.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/morgan/Programmation/Projects/qt-pong/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/qt-pong.dir/src/paddle.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/qt-pong.dir/src/paddle.cpp.o -c /home/morgan/Programmation/Projects/qt-pong/src/paddle.cpp
+
+CMakeFiles/qt-pong.dir/src/paddle.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qt-pong.dir/src/paddle.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/morgan/Programmation/Projects/qt-pong/src/paddle.cpp > CMakeFiles/qt-pong.dir/src/paddle.cpp.i
+
+CMakeFiles/qt-pong.dir/src/paddle.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qt-pong.dir/src/paddle.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/morgan/Programmation/Projects/qt-pong/src/paddle.cpp -o CMakeFiles/qt-pong.dir/src/paddle.cpp.s
+
+CMakeFiles/qt-pong.dir/src/view.cpp.o: CMakeFiles/qt-pong.dir/flags.make
+CMakeFiles/qt-pong.dir/src/view.cpp.o: src/view.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/morgan/Programmation/Projects/qt-pong/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/qt-pong.dir/src/view.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/qt-pong.dir/src/view.cpp.o -c /home/morgan/Programmation/Projects/qt-pong/src/view.cpp
+
+CMakeFiles/qt-pong.dir/src/view.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qt-pong.dir/src/view.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/morgan/Programmation/Projects/qt-pong/src/view.cpp > CMakeFiles/qt-pong.dir/src/view.cpp.i
+
+CMakeFiles/qt-pong.dir/src/view.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qt-pong.dir/src/view.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/morgan/Programmation/Projects/qt-pong/src/view.cpp -o CMakeFiles/qt-pong.dir/src/view.cpp.s
+
+CMakeFiles/qt-pong.dir/src/player.cpp.o: CMakeFiles/qt-pong.dir/flags.make
+CMakeFiles/qt-pong.dir/src/player.cpp.o: src/player.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/morgan/Programmation/Projects/qt-pong/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/qt-pong.dir/src/player.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/qt-pong.dir/src/player.cpp.o -c /home/morgan/Programmation/Projects/qt-pong/src/player.cpp
+
+CMakeFiles/qt-pong.dir/src/player.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qt-pong.dir/src/player.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/morgan/Programmation/Projects/qt-pong/src/player.cpp > CMakeFiles/qt-pong.dir/src/player.cpp.i
+
+CMakeFiles/qt-pong.dir/src/player.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qt-pong.dir/src/player.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/morgan/Programmation/Projects/qt-pong/src/player.cpp -o CMakeFiles/qt-pong.dir/src/player.cpp.s
+
 # Object files for target qt-pong
 qt__pong_OBJECTS = \
 "CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o" \
 "CMakeFiles/qt-pong.dir/src/main.cpp.o" \
-"CMakeFiles/qt-pong.dir/src/main_window.cpp.o"
+"CMakeFiles/qt-pong.dir/src/main_window.cpp.o" \
+"CMakeFiles/qt-pong.dir/src/scene.cpp.o" \
+"CMakeFiles/qt-pong.dir/src/ball.cpp.o" \
+"CMakeFiles/qt-pong.dir/src/config.cpp.o" \
+"CMakeFiles/qt-pong.dir/src/paddle.cpp.o" \
+"CMakeFiles/qt-pong.dir/src/view.cpp.o" \
+"CMakeFiles/qt-pong.dir/src/player.cpp.o"
 
 # External object files for target qt-pong
 qt__pong_EXTERNAL_OBJECTS =
@@ -127,12 +211,18 @@ qt__pong_EXTERNAL_OBJECTS =
 qt-pong: CMakeFiles/qt-pong.dir/qt-pong_autogen/mocs_compilation.cpp.o
 qt-pong: CMakeFiles/qt-pong.dir/src/main.cpp.o
 qt-pong: CMakeFiles/qt-pong.dir/src/main_window.cpp.o
+qt-pong: CMakeFiles/qt-pong.dir/src/scene.cpp.o
+qt-pong: CMakeFiles/qt-pong.dir/src/ball.cpp.o
+qt-pong: CMakeFiles/qt-pong.dir/src/config.cpp.o
+qt-pong: CMakeFiles/qt-pong.dir/src/paddle.cpp.o
+qt-pong: CMakeFiles/qt-pong.dir/src/view.cpp.o
+qt-pong: CMakeFiles/qt-pong.dir/src/player.cpp.o
 qt-pong: CMakeFiles/qt-pong.dir/build.make
 qt-pong: /usr/lib/libQt5Widgets.so.5.15.2
 qt-pong: /usr/lib/libQt5Gui.so.5.15.2
 qt-pong: /usr/lib/libQt5Core.so.5.15.2
 qt-pong: CMakeFiles/qt-pong.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/morgan/Programmation/Projects/qt-pong/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable qt-pong"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/morgan/Programmation/Projects/qt-pong/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable qt-pong"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/qt-pong.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

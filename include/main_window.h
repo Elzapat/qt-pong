@@ -1,8 +1,11 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include <QMainWindow>
 #include <QtWidgets>
+#include <QMainWindow>
+#include <QDebug>
+#include "config.h"
+#include "view.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -10,13 +13,15 @@ class MainWindow : public QMainWindow {
     public:
         explicit MainWindow(QWidget* parent = 0);
         ~MainWindow();
-        QGroupBox* build_group_box_control();
-
+        
     public slots:
 
     private:
-        QWidget* main_widget;
+        QHBoxLayout* main_layout;
         QMenu* file_menu;
+        QMenu* config_menu;
+        QMenu* help_menu;
+        View* view;
 };
 
 #endif

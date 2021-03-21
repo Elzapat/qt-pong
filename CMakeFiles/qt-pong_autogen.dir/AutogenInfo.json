@@ -94,7 +94,44 @@
 	"CMAKE_SOURCE_DIR" : "/home/morgan/Programmation/Projects/qt-pong",
 	"DEP_FILE" : "",
 	"DEP_FILE_RULE_NAME" : "",
-	"HEADERS" : [],
+	"HEADERS" : 
+	[
+		[
+			"/home/morgan/Programmation/Projects/qt-pong/include/ball.h",
+			"MU",
+			"6YEA5652QU/moc_ball.cpp"
+		],
+		[
+			"/home/morgan/Programmation/Projects/qt-pong/include/config.h",
+			"MU",
+			"6YEA5652QU/moc_config.cpp"
+		],
+		[
+			"/home/morgan/Programmation/Projects/qt-pong/include/main_window.h",
+			"MU",
+			"6YEA5652QU/moc_main_window.cpp"
+		],
+		[
+			"/home/morgan/Programmation/Projects/qt-pong/include/paddle.h",
+			"MU",
+			"6YEA5652QU/moc_paddle.cpp"
+		],
+		[
+			"/home/morgan/Programmation/Projects/qt-pong/include/player.h",
+			"MU",
+			"6YEA5652QU/moc_player.cpp"
+		],
+		[
+			"/home/morgan/Programmation/Projects/qt-pong/include/scene.h",
+			"MU",
+			"6YEA5652QU/moc_scene.cpp"
+		],
+		[
+			"/home/morgan/Programmation/Projects/qt-pong/include/view.h",
+			"MU",
+			"6YEA5652QU/moc_view.cpp"
+		]
+	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
 	"INCLUDE_DIR" : "/home/morgan/Programmation/Projects/qt-pong/qt-pong_autogen/include",
 	"MOC_COMPILATION_FILE" : "/home/morgan/Programmation/Projects/qt-pong/qt-pong_autogen/mocs_compilation.cpp",
@@ -146,11 +183,17 @@
 	"SETTINGS_FILE" : "/home/morgan/Programmation/Projects/qt-pong/CMakeFiles/qt-pong_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
+		[ "/home/morgan/Programmation/Projects/qt-pong/src/ball.cpp", "MU" ],
+		[ "/home/morgan/Programmation/Projects/qt-pong/src/config.cpp", "MU" ],
 		[ "/home/morgan/Programmation/Projects/qt-pong/src/main.cpp", "MU" ],
 		[
 			"/home/morgan/Programmation/Projects/qt-pong/src/main_window.cpp",
 			"MU"
-		]
+		],
+		[ "/home/morgan/Programmation/Projects/qt-pong/src/paddle.cpp", "MU" ],
+		[ "/home/morgan/Programmation/Projects/qt-pong/src/player.cpp", "MU" ],
+		[ "/home/morgan/Programmation/Projects/qt-pong/src/scene.cpp", "MU" ],
+		[ "/home/morgan/Programmation/Projects/qt-pong/src/view.cpp", "MU" ]
 	],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],
