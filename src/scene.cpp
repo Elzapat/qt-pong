@@ -89,8 +89,10 @@ void Scene::keyPressEvent(QKeyEvent* event) {
                 p2->set_down_pressed(true);
                 break;
             case Qt::Key_Space:
-                if (!ball->is_moving())
+                if (!ball->is_moving()) {
+                    ball->reset(PlayerPosition::Default);
                     ball->launch();
+                }
                 break;
             case Qt::Key_Escape:
                 pause_text->show();

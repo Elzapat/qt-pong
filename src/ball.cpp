@@ -12,8 +12,8 @@ Ball::Ball() : vx(0.f), vy(0.f), m_is_moving(false), ball_speed(Config::get<qrea
     this->setBrush(BALL_COLOR);
 
     // ball_speed = Config::get<qreal>("ball_speed");
-    qDebug() << ball_speed;
-    qDebug() << Config::get<qreal>("ball_speed");
+    // qDebug() << ball_speed;
+    // qDebug() << Config::get<qreal>("ball_speed");
 }
 
 Ball::~Ball() {}
@@ -67,6 +67,7 @@ void Ball::collision(Paddle* p1, Paddle* p2) {
 
 void Ball::generate_new_angle(Paddle* p) {
     // Speed up the ball by a certain rate in percent
+    // qreal ball_speed = Config::get<qreal>("ball_speed");
     qreal speed_up_rate = Config::get<qreal>("ball_speed_up_rate");
 
     ball_speed += (ball_speed / 100) * speed_up_rate;
@@ -120,7 +121,7 @@ void Ball::reset(PlayerPosition new_side) {
 }
 
 void Ball::launch() {
-    qDebug() << ball_speed;
+    qreal ball_speed = Config::get<qreal>("ball_speed");
     qreal max_angle = Config::get<qreal>("max_bounce_angle");
 
     qreal random_angle = QRandomGenerator::global()->bounded(0, 2 * max_angle) - max_angle;
