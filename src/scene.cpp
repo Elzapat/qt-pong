@@ -1,18 +1,21 @@
 #include "../include/scene.h"
 
-Scene::Scene(QObject* parent) : QGraphicsScene(parent) {
+Scene::Scene(QObject* parent) : QGraphicsScene(parent), game_paused(false) {
     // Setting the background to black
     this->setBackgroundBrush(Qt::black);
 
     // Instanciating the game objects
     ball = new Ball;
-    ball->reset(PlayerPosition::Left);
+    ball->reset(static_cast<PlayerPosition>(QRandomGenerator::global()->bounded(0, 2) - 1));
     p1 = new Player(PlayerPosition::Left);
     p2 = new Player(PlayerPosition::Right);
 
     // Creating the middle line
     middle_line = new QGraphicsLineItem;
     setup_middle_line();
+    
+    pause_text = new QGraphicsTextItem;
+    setup_pause_text();
 
     // Adding the game objects to the scene
     this->addItem(p1->paddle());
@@ -21,6 +24,7 @@ Scene::Scene(QObject* parent) : QGraphicsScene(parent) {
     this->addItem(p2->score_text());
     this->addItem(middle_line);
     this->addItem(ball);
+    this->addItem(pause_text);
 
     // Timer which is going to update every game object each frame
     QTimer* update_timer = new QTimer(this);
@@ -42,6 +46,8 @@ Scene::~Scene() {
 }
 
 void Scene::update() {
+    if (game_paused) return;
+
     ball->move();
     ball->collision(p1->paddle(), p2->paddle());
     p1->update();
@@ -64,26 +70,40 @@ void Scene::resize_event() {
     p1->update_score_text();
     p2->update_score_text();
     update_middle_line();
+    ball->reset(PlayerPosition::Default);
 }
 
 void Scene::keyPressEvent(QKeyEvent* event) {
-    switch (event->key()) {
-        case Qt::Key_Z:
-            p1->set_up_pressed(true);
-            break;
-        case Qt::Key_S:
-            p1->set_down_pressed(true);
-            break;
-        case Qt::Key_O:
-            p2->set_up_pressed(true);
-            break;
-        case Qt::Key_L:
-            p2->set_down_pressed(true);
-            break;
-        case Qt::Key_Space:
-            if (ball->is_moving()) break;
-            ball->launch();
-            break;
+    if (!game_paused) {
+        switch (event->key()) {
+            case Qt::Key_Z:
+                p1->set_up_pressed(true);
+                break;
+            case Qt::Key_S:
+                p1->set_down_pressed(true);
+                break;
+            case Qt::Key_O:
+                p2->set_up_pressed(true);
+                break;
+            case Qt::Key_L:
+                p2->set_down_pressed(true);
+                break;
+            case Qt::Key_Space:
+                if (!ball->is_moving())
+                    ball->launch();
+                break;
+            case Qt::Key_Escape:
+                pause_text->show();
+                game_paused = true;
+                break;
+        }
+    } else {
+        switch (event->key()) {
+            case Qt::Key_Escape:
+                pause_text->hide();
+                game_paused = false;
+                break;
+        }
     }
 }
 
@@ -119,5 +139,21 @@ void Scene::setup_middle_line() {
 
 void Scene::update_middle_line() {
     quint16 b_h = Config::get<quint16>("board_height");
-    middle_line->setLine(0, -b_h / 2, 0, b_h / 2);
+    middle_line->setLine(-10, -b_h / 2, -10, b_h / 2);
+}
+
+void Scene::setup_pause_text() {
+    int id = QFontDatabase::addApplicationFont("assets/fonts/bit5x3.ttf");
+    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+    QFont font(family);
+
+    quint16 text_size = Config::get<quint16>("score_text_size");
+
+    pause_text->setFont(font);
+    pause_text->setPlainText("PAUSE");
+    pause_text->setScale(text_size);
+
+    QRectF rect = pause_text->boundingRect();
+    pause_text->setPos((-rect.width() / 2) * text_size, (-rect.height() / 2) * text_size);
+    pause_text->hide();
 }

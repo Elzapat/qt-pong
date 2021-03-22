@@ -7,7 +7,8 @@
 
 enum class PlayerPosition {
     Left = 0,
-    Right = 1
+    Right = 1,
+    Default = 2
 };
 
 class Player : public QObject {

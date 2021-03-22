@@ -40,20 +40,21 @@ void Player::set_down_pressed(bool is_pressed) {
 
 void Player::update() {
     qreal paddle_speed = Config::get<qreal>("paddle_speed");
+    qreal dt = 1.f / Config::get<qreal>("fps");
 
     // Update the paddle's position if the player is pressing the correct key
     if (up_pressed)
-        m_paddle->setY(m_paddle->y() - paddle_speed);
+        m_paddle->setY(m_paddle->y() - paddle_speed * dt);
     else if (down_pressed)
-        m_paddle->setY(m_paddle->y() + paddle_speed);
+        m_paddle->setY(m_paddle->y() + paddle_speed * dt);
 
     // If the paddle has gone out of the board's limits, bring it back
     quint16 p_h = Config::get<quint16>("paddle_height");
     quint16 b_h = Config::get<quint16>("board_height");
-    if (m_paddle->y() < -b_h / 2)
-        m_paddle->setY(-b_h / 2);
-    else if (m_paddle->y() + p_h > b_h / 2)
-        m_paddle->setY(b_h / 2 - p_h);
+    if (m_paddle->y() - p_h / 2 < -b_h / 2)
+        m_paddle->setY(-b_h / 2 + p_h / 2);
+    else if (m_paddle->y() + p_h / 2 > b_h / 2)
+        m_paddle->setY(b_h / 2 - p_h / 2);
 }
 
 void Player::setup_score_text() {
@@ -72,16 +73,16 @@ void Player::update_score_text() {
     quint16 board_width = Config::get<quint16>("board_width");
     quint16 board_height = Config::get<quint16>("board_height");
     qreal text_width = m_score_text->boundingRect().width();
+    qreal text_height = m_score_text->boundingRect().width();
 
-    QFont font = m_score_text->font();
-    font.setPointSize(text_size);
-    m_score_text->setFont(font);
+    m_score_text->setScale(text_size);
 
     if (m_position == PlayerPosition::Left)
-        m_score_text->setPos(-board_width / 4 - text_width / 2, -board_height / 4 - text_width / 2);
+        m_score_text->setPos(-board_width / 4 - (text_width / 2) * text_size, 
+                -board_height / 4);
     else if (m_position == PlayerPosition::Right)
-        m_score_text->setPos(board_width / 4 - text_width / 2, -board_height / 4 - text_width / 2);
-
+        m_score_text->setPos(board_width / 4 - (text_width / 2) * text_size,
+                -board_height / 4);
 }
 
 QGraphicsTextItem* Player::score_text() const {
@@ -91,4 +92,5 @@ QGraphicsTextItem* Player::score_text() const {
 void Player::scored() {
     score++;
     m_score_text->setPlainText(QString::number(score));
+    update_score_text();
 }

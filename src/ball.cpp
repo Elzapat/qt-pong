@@ -1,6 +1,6 @@
 #include "../include/ball.h"
 
-Ball::Ball() : vx(Config::get<qreal>("ball_speed")), vy(0.f), m_is_moving(false),
+Ball::Ball() : vx(0.f), vy(0.f), m_is_moving(false), ball_speed(Config::get<qreal>("ball_speed")),
     QGraphicsRectItem(
         -Config::get<quint16>("ball_width") / 2,
         -Config::get<quint16>("ball_height") / 2,
@@ -10,6 +10,10 @@ Ball::Ball() : vx(Config::get<qreal>("ball_speed")), vy(0.f), m_is_moving(false)
     // Set ball color to white
     const QBrush BALL_COLOR = (QBrush)Qt::white;
     this->setBrush(BALL_COLOR);
+
+    // ball_speed = Config::get<qreal>("ball_speed");
+    qDebug() << ball_speed;
+    qDebug() << Config::get<qreal>("ball_speed");
 }
 
 Ball::~Ball() {}
@@ -62,12 +66,17 @@ void Ball::collision(Paddle* p1, Paddle* p2) {
 }
 
 void Ball::generate_new_angle(Paddle* p) {
+    // Speed up the ball by a certain rate in percent
+    qreal speed_up_rate = Config::get<qreal>("ball_speed_up_rate");
+
+    ball_speed += (ball_speed / 100) * speed_up_rate;
+
     quint16 p_h = Config::get<quint16>("paddle_height");
     quint16 b_h = Config::get<quint16>("ball_height");
 
     // Calculate the distance between the center of the paddle 
     // and the center of the ball on the y axis
-    qreal dy = (p->y() + p_h / 2) - (this->y() + b_h / 2); 
+    qreal dy = p->y() - (this->y()); 
 
     // We divide the distance with half of the paddle's height
     // in order to normalize it, so norm_dy will always be between
@@ -89,7 +98,6 @@ void Ball::generate_new_angle(Paddle* p) {
     new_angle = new_angle * (M_PI / 180);
 
     // Calculate the new ball velocity on each axis
-    qreal ball_speed = Config::get<qreal>("ball_speed");
     qreal direction = p->x() > 0 ? -1 : 1;
     vx = direction * ball_speed * qCos(new_angle);
     vy = ball_speed * -qSin(new_angle);
@@ -97,23 +105,26 @@ void Ball::generate_new_angle(Paddle* p) {
 
 void Ball::reset(PlayerPosition new_side) {
     m_is_moving = false;
+    if (new_side != PlayerPosition::Default)
+        side = new_side;
 
+    ball_speed = Config::get<qreal>("ball_speed");
     quint16 board_w = Config::get<quint16>("board_width");
     quint16 ball_h = Config::get<quint16>("ball_height");
     quint16 paddle_spacing = Config::get<quint16>("paddle_spacing");
 
-    if (new_side == PlayerPosition::Left)
+    if (side == PlayerPosition::Left)
         this->setPos(-board_w / 2 + 2 * paddle_spacing, -ball_h / 2);
     else
         this->setPos(board_w / 2 - 2 * paddle_spacing, -ball_h / 2);
 }
 
 void Ball::launch() {
-    qreal ball_speed = Config::get<qreal>("ball_speed");
+    qDebug() << ball_speed;
     qreal max_angle = Config::get<qreal>("max_bounce_angle");
 
     qreal random_angle = QRandomGenerator::global()->bounded(0, 2 * max_angle) - max_angle;
-    random_angle = random_angle * (180 / M_PI);
+    random_angle = random_angle * (M_PI / 180);
 
     qint8 dir = side == PlayerPosition::Left ? 1 : -1;
 

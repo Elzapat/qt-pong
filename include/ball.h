@@ -27,6 +27,7 @@ class Ball : public QObject, public QGraphicsRectItem {
 
     private:
         qreal vy, vx;
+        qreal ball_speed;
         bool m_is_moving;
         PlayerPosition side;
         void generate_new_angle(Paddle* p);
