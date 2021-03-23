@@ -1,2 +1,0 @@
-# Hashes of file build rules.
-17dba87cf4de0a0272812e884b44a540 CMakeFiles/qt-pong_autogen

@@ -16,10 +16,13 @@ class Scene : public QGraphicsScene {
         void resize_event();
         void keyPressEvent(QKeyEvent* event) override;
         void keyReleaseEvent(QKeyEvent* event) override;
+        void drawBackground(QPainter* painter, const QRectF& rect) override;
 
     public slots:
         void update();
         void player_scored(quint8 player);
+        void set_background_image();
+        void remove_background_image();
 
     private:
         Ball* ball;
@@ -28,9 +31,12 @@ class Scene : public QGraphicsScene {
         bool game_paused;
         QGraphicsTextItem* pause_text;
         QGraphicsLineItem* middle_line;
+        QPixmap background_image;
+        bool background_image_set;
         void setup_middle_line();
         void setup_pause_text();
         void update_middle_line();
+        void update_background_image();
 };
 
 #endif

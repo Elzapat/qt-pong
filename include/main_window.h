@@ -13,8 +13,6 @@ class MainWindow : public QMainWindow {
     public:
         explicit MainWindow(QWidget* parent = 0);
         ~MainWindow();
-        
-    public slots:
 
     private:
         QHBoxLayout* main_layout;
@@ -22,6 +20,9 @@ class MainWindow : public QMainWindow {
         QMenu* config_menu;
         QMenu* help_menu;
         View* view;
+
+        QAction* action_add_background_image;
+        QAction* action_remove_background_image;
 };
 
 #endif

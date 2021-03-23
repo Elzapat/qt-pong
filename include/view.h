@@ -10,6 +10,7 @@ class View : public QGraphicsView {
     public:
         View(Scene* s, QWidget* parent);
         ~View();
+        Scene* get_scene();
         void resizeEvent(QResizeEvent* event) override;
 
     private:

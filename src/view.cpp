@@ -18,4 +18,9 @@ void View::resizeEvent(QResizeEvent* event) {
     scene->resize_event();
 
     this->setScene(scene);
+    this->fitInView(this->sceneRect());
+}
+
+Scene* View::get_scene() {
+    return scene;
 }

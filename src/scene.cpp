@@ -1,6 +1,6 @@
 #include "../include/scene.h"
 
-Scene::Scene(QObject* parent) : QGraphicsScene(parent), game_paused(false) {
+Scene::Scene(QObject* parent) : QGraphicsScene(parent), game_paused(false), background_image_set(false) {
     // Setting the background to black
     this->setBackgroundBrush(Qt::black);
 
@@ -70,6 +70,7 @@ void Scene::resize_event() {
     p1->update_score_text();
     p2->update_score_text();
     update_middle_line();
+    update_background_image();
     ball->reset(PlayerPosition::Default);
 }
 
@@ -158,4 +159,42 @@ void Scene::setup_pause_text() {
     QRectF rect = pause_text->boundingRect();
     pause_text->setPos((-rect.width() / 2) * text_size, (-rect.height() / 2) * text_size);
     pause_text->hide();
+}
+
+void Scene::drawBackground(QPainter* painter, const QRectF& rect) {
+    quint16 b_w = Config::get<quint16>("board_width");
+    quint16 b_h = Config::get<quint16>("board_height");
+
+    if (!background_image_set) {
+        painter->setBrush((QBrush)Qt::black);
+        painter->drawRect(-b_w / 2 - 5, -b_h / 2 - 5, b_w + 10, b_h + 10);
+    } else {
+        QRectF source(0.0, 0.0, background_image.width(), background_image.height());
+        QRectF target(-b_w / 2, -b_h / 2, b_w, b_h);
+        painter->drawPixmap(target, background_image, source);
+    }
+}
+
+void Scene::set_background_image() {
+    QString filename = QFileDialog::getOpenFileName(nullptr, tr("Open Image"),
+            "", tr("Image Files (*.png *.jpg *.bmp)"));
+    background_image.load(filename);
+    background_image_set = true;
+    update_background_image();
+}
+
+void Scene::remove_background_image() {
+    background_image_set = false;
+
+    quint16 b_w = Config::get<quint16>("board_width");
+    quint16 b_h = Config::get<quint16>("board_height");
+    QGraphicsScene::update(-b_w / 2, -b_h / 2, b_w, b_h);
+}
+
+void Scene::update_background_image() {
+    if (!background_image_set) return;
+
+    quint16 b_w = Config::get<quint16>("board_width");
+    quint16 b_h = Config::get<quint16>("board_height");
+    background_image = background_image.scaled(b_w, b_h, Qt::KeepAspectRatio);
 }
