@@ -18,9 +18,10 @@ class Ball : public QObject, public QGraphicsRectItem {
         ~Ball();
         void move();
         void collision(Paddle* p1, Paddle* p2);
-        void reset(PlayerPosition new_side);
+        void reset(PlayerPosition new_side = PlayerPosition::Default);
         void launch();
         bool is_moving() const;
+        void update_new_config();
 
     signals:
         void player_scored(quint8 player);
@@ -28,6 +29,7 @@ class Ball : public QObject, public QGraphicsRectItem {
     private:
         qreal vy, vx;
         qreal ball_speed;
+        qreal base_speed;
         bool m_is_moving;
         PlayerPosition side;
         void generate_new_angle(Paddle* p);

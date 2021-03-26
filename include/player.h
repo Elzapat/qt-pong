@@ -22,6 +22,7 @@ class Player : public QObject {
         void set_down_pressed(bool is_pressed);
         void update();
         void update_score_text();
+        void update_new_config();
         Paddle* paddle() const;
         QGraphicsTextItem* score_text() const;
         void scored();

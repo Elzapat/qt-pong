@@ -2,8 +2,7 @@
 
 Ball::Ball() : vx(0.f), vy(0.f), m_is_moving(false), ball_speed(Config::get<qreal>("ball_speed")),
     QGraphicsRectItem(
-        -Config::get<quint16>("ball_width") / 2,
-        -Config::get<quint16>("ball_height") / 2,
+        0, 0,
         Config::get<quint16>("ball_width"),
         Config::get<quint16>("ball_height")
 ) {
@@ -77,7 +76,7 @@ void Ball::generate_new_angle(Paddle* p) {
 
     // Calculate the distance between the center of the paddle 
     // and the center of the ball on the y axis
-    qreal dy = p->y() - (this->y()); 
+    qreal dy = (p->y() + p_h / 2) - (this->y() + b_h / 2); 
 
     // We divide the distance with half of the paddle's height
     // in order to normalize it, so norm_dy will always be between
@@ -91,9 +90,10 @@ void Ball::generate_new_angle(Paddle* p) {
 
     // In case the new angle is somehow (it can very easily happen)
     // higher than the max angle, set it to the max angle
-    if (new_angle > max_angle) {
+    if (new_angle > max_angle)
         new_angle = max_angle;
-    }
+    else if (new_angle < -max_angle)
+        new_angle = -max_angle;
 
     // Convert the new angle in radians
     new_angle = new_angle * (M_PI / 180);
@@ -115,13 +115,14 @@ void Ball::reset(PlayerPosition new_side) {
     quint16 paddle_spacing = Config::get<quint16>("paddle_spacing");
 
     if (side == PlayerPosition::Left)
-        this->setPos(-board_w / 2 + 2 * paddle_spacing, -ball_h / 2);
+        this->setPos(-board_w / 2 + paddle_spacing + 100, -ball_h / 2);
     else
-        this->setPos(board_w / 2 - 2 * paddle_spacing, -ball_h / 2);
+        this->setPos(board_w / 2 - paddle_spacing - 100, -ball_h / 2);
 }
 
 void Ball::launch() {
-    qreal ball_speed = Config::get<qreal>("ball_speed");
+    ball_speed = Config::get<qreal>("ball_speed");
+    base_speed = ball_speed;
     qreal max_angle = Config::get<qreal>("max_bounce_angle");
 
     qreal random_angle = QRandomGenerator::global()->bounded(0, 2 * max_angle) - max_angle;
@@ -136,4 +137,22 @@ void Ball::launch() {
 
 bool Ball::is_moving() const {
     return m_is_moving;
+}
+
+void Ball::update_new_config() {
+    quint16 ball_width = Config::get<quint16>("ball_width");
+    quint16 ball_height = Config::get<quint16>("ball_height");
+    quint16 new_ball_speed = Config::get<qreal>("ball_speed");
+
+    this->setRect(0, 0, ball_width, ball_height);
+
+    if (new_ball_speed != base_speed) {
+        qreal ratio = new_ball_speed / base_speed;
+        vx *= ratio;
+        vy *= ratio;
+        base_speed = new_ball_speed;
+        ball_speed = new_ball_speed;
+    }
+
+    if (!m_is_moving) reset();
 }

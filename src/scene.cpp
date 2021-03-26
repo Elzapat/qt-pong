@@ -27,12 +27,12 @@ Scene::Scene(QObject* parent) : QGraphicsScene(parent), game_paused(false), back
     this->addItem(pause_text);
 
     // Timer which is going to update every game object each frame
-    QTimer* update_timer = new QTimer(this);
-    connect(update_timer, SIGNAL(timeout()), this, SLOT(update()));
+    update_timer = new QTimer(this);
+    this->connect(update_timer, SIGNAL(timeout()), this, SLOT(update()));
     update_timer->start((1.f / Config::get<qreal>("fps")) * 1000.f);
 
     // Connect to the signal the ball emits when a player scores
-    connect(ball, SIGNAL(player_scored(quint8)), this, SLOT(player_scored(quint8)));
+    this->connect(ball, SIGNAL(player_scored(quint8)), this, SLOT(player_scored(quint8)));
 
     // QGraphicsPixmapItem* qdpi = new QGraphicsPixmapItem(QPixmap("assets/images/uno.png"));
     // this->addItem(qdpi);
@@ -52,6 +52,10 @@ void Scene::update() {
     ball->collision(p1->paddle(), p2->paddle());
     p1->update();
     p2->update();
+
+    quint16 b_w = Config::get<quint16>("board_width");
+    quint16 b_h = Config::get<quint16>("board_height");
+    QGraphicsScene::update(-b_w / 2, -b_h / 2, b_w, b_h);
 }
 
 void Scene::player_scored(quint8 player) {
@@ -178,6 +182,8 @@ void Scene::drawBackground(QPainter* painter, const QRectF& rect) {
 void Scene::set_background_image() {
     QString filename = QFileDialog::getOpenFileName(nullptr, tr("Open Image"),
             "", tr("Image Files (*.png *.jpg *.bmp)"));
+    if (filename.isEmpty()) return;
+
     background_image.load(filename);
     background_image_set = true;
     update_background_image();
@@ -197,4 +203,16 @@ void Scene::update_background_image() {
     quint16 b_w = Config::get<quint16>("board_width");
     quint16 b_h = Config::get<quint16>("board_height");
     background_image = background_image.scaled(b_w, b_h, Qt::KeepAspectRatio);
+}
+
+void Scene::update_new_config() {
+    quint16 b_w = Config::get<quint16>("board_width");
+    quint16 b_h = Config::get<quint16>("board_height");
+
+    ball->update_new_config();
+    p1->update_new_config();
+    p2->update_new_config();
+    update_timer->start((1.f / Config::get<qreal>("fps")) * 1000.f);
+    pause_text->setScale(Config::get<qreal>("score_text_size"));
+    QGraphicsScene::update(-b_w / 2, -b_h / 2, b_w, b_h);
 }

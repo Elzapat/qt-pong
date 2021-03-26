@@ -10,11 +10,9 @@ class Paddle : public QObject, public QGraphicsRectItem {
     Q_OBJECT
 
     public:
-        Paddle(qreal x, qreal y);
+        Paddle();
         ~Paddle();
-        void set_pos(qreal x, qreal y);
-
-    private:
+        void update_new_config();
 };
 
 #endif

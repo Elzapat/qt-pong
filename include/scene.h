@@ -23,8 +23,10 @@ class Scene : public QGraphicsScene {
         void player_scored(quint8 player);
         void set_background_image();
         void remove_background_image();
+        void update_new_config();
 
     private:
+        QTimer* update_timer;
         Ball* ball;
         Player* p1;
         Player* p2;

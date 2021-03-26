@@ -26,6 +26,7 @@ add_executable(qt-pong
     src/paddle.cpp
     src/view.cpp
     src/player.cpp
+    src/config_window.cpp
     include/main_window.h
     include/scene.h
     include/ball.h
@@ -33,11 +34,10 @@ add_executable(qt-pong
     include/paddle.h
     include/view.h
     include/player.h
+    include/config_window.h
 )
 
 target_link_libraries(qt-pong
     PUBLIC
     Qt5::Widgets
-    Qt5::Core
-    Qt5::Gui
 )
