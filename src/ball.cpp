@@ -1,6 +1,6 @@
 #include "../include/ball.h"
 
-Ball::Ball() : vx(0.f), vy(0.f), m_is_moving(false), ball_speed(Config::get<qreal>("ball_speed")),
+Ball::Ball() : vx(0.f), vy(0.f), is_moving(false), ball_speed(Config::get<qreal>("ball_speed")),
     QGraphicsRectItem(
         0, 0,
         Config::get<quint16>("ball_width"),
@@ -18,7 +18,7 @@ Ball::Ball() : vx(0.f), vy(0.f), m_is_moving(false), ball_speed(Config::get<qrea
 Ball::~Ball() {}
 
 void Ball::move() {
-    if (!m_is_moving) return;
+    if (!is_moving) return;
 
     // Time passed since last frame
     const qreal dt = 1.f / Config::get<qreal>("fps");
@@ -31,7 +31,7 @@ void Ball::move() {
 }
 
 void Ball::collision(Paddle* p1, Paddle* p2) {
-    if (!m_is_moving) return;
+    if (!is_moving) return;
 
     quint16 board_w = Config::get<quint16>("board_width");
     quint16 board_h = Config::get<quint16>("board_height");
@@ -105,7 +105,7 @@ void Ball::generate_new_angle(Paddle* p) {
 }
 
 void Ball::reset(PlayerPosition new_side) {
-    m_is_moving = false;
+    is_moving = false;
     if (new_side != PlayerPosition::Default)
         side = new_side;
 
@@ -132,11 +132,11 @@ void Ball::launch() {
 
     vx = dir * ball_speed * qCos(random_angle);
     vy = ball_speed * qSin(random_angle);
-    m_is_moving = true;
+    is_moving = true;
 }
 
-bool Ball::is_moving() const {
-    return m_is_moving;
+bool Ball::get_is_moving() const {
+    return is_moving;
 }
 
 void Ball::update_new_config() {
@@ -154,5 +154,5 @@ void Ball::update_new_config() {
         ball_speed = new_ball_speed;
     }
 
-    if (!m_is_moving) reset();
+    if (!is_moving) reset();
 }

@@ -4,6 +4,12 @@ Scene::Scene(QObject* parent) : QGraphicsScene(parent), game_paused(false), back
     // Setting the background to black
     this->setBackgroundBrush(Qt::black);
 
+    // Loading and playing background music
+    music_player.setMedia(QUrl::fromLocalFile(
+        QFileInfo("assets/audio/pong3.wav").absoluteFilePath()
+    ));
+    music_player.play();
+
     // Instanciating the game objects
     ball = new Ball;
     ball->reset(static_cast<PlayerPosition>(QRandomGenerator::global()->bounded(0, 2) - 1));
@@ -33,15 +39,14 @@ Scene::Scene(QObject* parent) : QGraphicsScene(parent), game_paused(false), back
 
     // Connect to the signal the ball emits when a player scores
     this->connect(ball, SIGNAL(player_scored(quint8)), this, SLOT(player_scored(quint8)));
-
-    // QGraphicsPixmapItem* qdpi = new QGraphicsPixmapItem(QPixmap("assets/images/uno.png"));
-    // this->addItem(qdpi);
 }
 
 Scene::~Scene() {
+    delete update_timer;
     delete ball;
     delete p1;
     delete p2;
+    delete pause_text;
     delete middle_line;
 }
 
@@ -94,7 +99,7 @@ void Scene::keyPressEvent(QKeyEvent* event) {
                 p2->set_down_pressed(true);
                 break;
             case Qt::Key_Space:
-                if (!ball->is_moving()) {
+                if (!ball->get_is_moving()) {
                     ball->reset(PlayerPosition::Default);
                     ball->launch();
                 }

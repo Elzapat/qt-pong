@@ -7,6 +7,7 @@
 #include "config.h"
 #include "view.h"
 #include "config_window.h"
+#include "controls_config_window.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT

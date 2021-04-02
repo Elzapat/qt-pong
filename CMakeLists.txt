@@ -15,7 +15,7 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Multimedia REQUIRED)
 
 add_executable(qt-pong
     src/main.cpp
@@ -27,6 +27,7 @@ add_executable(qt-pong
     src/view.cpp
     src/player.cpp
     src/config_window.cpp
+    src/controls_config_window.cpp
     include/main_window.h
     include/scene.h
     include/ball.h
@@ -35,9 +36,11 @@ add_executable(qt-pong
     include/view.h
     include/player.h
     include/config_window.h
+    include/controls_config_window.h
 )
 
 target_link_libraries(qt-pong
     PUBLIC
     Qt5::Widgets
+    Qt5::Multimedia
 )

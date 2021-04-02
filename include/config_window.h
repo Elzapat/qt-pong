@@ -21,7 +21,7 @@ class ConfigWindow : public QWidget {
     signals:
         void config_changed();
 
-    public:
+    private:
         struct ConfigInput {
             QString input_name;
             QLineEdit* input;

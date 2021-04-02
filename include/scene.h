@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 #include <QRandomGenerator>
+#include <QMediaPlayer>
 #include "config.h"
 #include "ball.h"
 #include "player.h"
@@ -35,6 +36,7 @@ class Scene : public QGraphicsScene {
         QGraphicsLineItem* middle_line;
         QPixmap background_image;
         bool background_image_set;
+        QMediaPlayer music_player;
         void setup_middle_line();
         void setup_pause_text();
         void update_middle_line();

@@ -20,7 +20,7 @@ class Ball : public QObject, public QGraphicsRectItem {
         void collision(Paddle* p1, Paddle* p2);
         void reset(PlayerPosition new_side = PlayerPosition::Default);
         void launch();
-        bool is_moving() const;
+        bool get_is_moving() const;
         void update_new_config();
 
     signals:
@@ -30,7 +30,7 @@ class Ball : public QObject, public QGraphicsRectItem {
         qreal vy, vx;
         qreal ball_speed;
         qreal base_speed;
-        bool m_is_moving;
+        bool is_moving;
         PlayerPosition side;
         void generate_new_angle(Paddle* p);
 };
