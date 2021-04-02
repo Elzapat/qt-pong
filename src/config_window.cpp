@@ -52,7 +52,7 @@ ConfigWindow::~ConfigWindow() {
     delete save_button;
     delete load_button;
     delete remove_button;
-    for (auto config_input : inputs) {
+    for (auto& config_input : inputs) {
         delete config_input.input;
     }
 }

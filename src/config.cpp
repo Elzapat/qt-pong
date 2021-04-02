@@ -2,9 +2,9 @@
 
 QSettings Config::config("config.ini", QSettings::IniFormat);
 
-void Config::set(QString conf_name, QVariant value) {
+void Config::set(QString conf_name, QVariant value, QString group) {
     // Set a new config value
-    config.setValue("config/" + conf_name, value);
+    config.setValue(group + "/" + conf_name, value);
 }
 
 void Config::reset_to_default() {
@@ -21,8 +21,8 @@ void Config::reset_to_default() {
     }
 }
 
-QStringList Config::get_all_keys() {
-    config.beginGroup("default");
+QStringList Config::get_all_keys(QString group) {
+    config.beginGroup(group);
     QStringList keys = config.childKeys();
     config.endGroup();
 

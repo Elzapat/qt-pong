@@ -35,6 +35,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     Config::set("board_height", view->height());
 
     this->setCentralWidget(view);
+
+    ControlsConfigWindow* controls = new ControlsConfigWindow;
+    controls->show();
 }
 
 MainWindow::~MainWindow() {
