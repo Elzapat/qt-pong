@@ -20,21 +20,23 @@ class Player : public QObject {
         void update_paddle();
         void set_up_pressed(bool is_pressed);
         void set_down_pressed(bool is_pressed);
+        void set_score(quint16 new_score);
         void update();
         void update_score_text();
         void update_new_config();
-        Paddle* paddle() const;
-        QGraphicsTextItem* score_text() const;
+        Paddle* get_paddle() const;
+        QGraphicsTextItem* get_score_text() const;
+        quint16 get_score() const;
         void scored();
 
     private:
-        Paddle* m_paddle;
+        Paddle* paddle;
         quint16 score;
-        PlayerPosition m_position;
+        PlayerPosition position;
         bool is_computer;
         bool up_pressed;
         bool down_pressed;
-        QGraphicsTextItem* m_score_text;
+        QGraphicsTextItem* score_text;
         void setup_score_text();
 };
 

@@ -32,13 +32,15 @@ class Scene : public QGraphicsScene {
         Player* p2;
         bool game_paused;
         QGraphicsTextItem* pause_text;
+        QGraphicsTextItem* win_text;
         QGraphicsLineItem* middle_line;
         QPixmap background_image;
         bool background_image_set;
         void setup_middle_line();
-        void setup_pause_text();
+        void setup_text(QGraphicsTextItem* text, QString content);
         void update_middle_line();
         void update_background_image();
+        void player_won(quint8 player);
 };
 
 #endif

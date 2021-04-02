@@ -15,16 +15,22 @@ Scene::Scene(QObject* parent) : QGraphicsScene(parent), game_paused(false), back
     setup_middle_line();
     
     pause_text = new QGraphicsTextItem;
-    setup_pause_text();
+    setup_text(pause_text, "PAUSE");
+    pause_text->hide();
+
+    win_text = new QGraphicsTextItem;
+    setup_text(win_text, "Player 1 won!");
+    win_text->hide();
 
     // Adding the game objects to the scene
-    this->addItem(p1->paddle());
-    this->addItem(p2->paddle());
-    this->addItem(p1->score_text());
-    this->addItem(p2->score_text());
+    this->addItem(p1->get_paddle());
+    this->addItem(p2->get_paddle());
+    this->addItem(p1->get_score_text());
+    this->addItem(p2->get_score_text());
     this->addItem(middle_line);
     this->addItem(ball);
     this->addItem(pause_text);
+    this->addItem(win_text);
 
     // Timer which is going to update every game object each frame
     update_timer = new QTimer(this);
@@ -39,17 +45,20 @@ Scene::Scene(QObject* parent) : QGraphicsScene(parent), game_paused(false), back
 }
 
 Scene::~Scene() {
+    delete update_timer;
     delete ball;
     delete p1;
     delete p2;
     delete middle_line;
+    delete pause_text;
+    delete win_text;
 }
 
 void Scene::update() {
     if (game_paused) return;
 
     ball->move();
-    ball->collision(p1->paddle(), p2->paddle());
+    ball->collision(p1->get_paddle(), p2->get_paddle());
     p1->update();
     p2->update();
 
@@ -59,12 +68,17 @@ void Scene::update() {
 }
 
 void Scene::player_scored(quint8 player) {
+    quint16 score_to_win = Config::get<quint16>("score_to_win");
     if (player == 1) {
         p1->scored(); 
         ball->reset(PlayerPosition::Left);
+        if (p1->get_score() >= score_to_win)
+            player_won(player);
     } else {
         p2->scored();
         ball->reset(PlayerPosition::Right);
+        if (p2->get_score() >= score_to_win)
+            player_won(player);
     }
 }
 
@@ -95,6 +109,7 @@ void Scene::keyPressEvent(QKeyEvent* event) {
                 break;
             case Qt::Key_Space:
                 if (!ball->is_moving()) {
+                    win_text->hide();
                     ball->reset(PlayerPosition::Default);
                     ball->launch();
                 }
@@ -149,20 +164,19 @@ void Scene::update_middle_line() {
     middle_line->setLine(-10, -b_h / 2, -10, b_h / 2);
 }
 
-void Scene::setup_pause_text() {
-    int id = QFontDatabase::addApplicationFont("assets/fonts/bit5x3.ttf");
+void Scene::setup_text(QGraphicsTextItem* text, QString content) {
+    int id = QFontDatabase::addApplicationFont("assets/fonts/bit5x5.ttf");
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
     QFont font(family);
 
-    quint16 text_size = Config::get<quint16>("score_text_size");
+    quint16 text_size = Config::get<quint16>("text_size");
 
-    pause_text->setFont(font);
-    pause_text->setPlainText("PAUSE");
-    pause_text->setScale(text_size);
+    text->setFont(font);
+    text->setPlainText(content);
+    text->setScale(text_size);
 
-    QRectF rect = pause_text->boundingRect();
-    pause_text->setPos((-rect.width() / 2) * text_size, (-rect.height() / 2) * text_size);
-    pause_text->hide();
+    QRectF rect = text->boundingRect();
+    text->setPos((-rect.width() / 2) * text_size, (-rect.height() / 2) * text_size);
 }
 
 void Scene::drawBackground(QPainter* painter, const QRectF& rect) {
@@ -213,6 +227,15 @@ void Scene::update_new_config() {
     p1->update_new_config();
     p2->update_new_config();
     update_timer->start((1.f / Config::get<qreal>("fps")) * 1000.f);
-    pause_text->setScale(Config::get<qreal>("score_text_size"));
+    pause_text->setScale(Config::get<qreal>("text_size"));
+    win_text->setScale(Config::get<qreal>("text_size"));
     QGraphicsScene::update(-b_w / 2, -b_h / 2, b_w, b_h);
+}
+
+void Scene::player_won(quint8 player) {
+    QString text = "Player " + QString::number(player) + " won!";
+    win_text->setPlainText(tr(text.toStdString().c_str()));
+    win_text->show();
+    p1->set_score(0);
+    p2->set_score(0);
 }
