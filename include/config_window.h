@@ -17,21 +17,30 @@ class ConfigWindow : public QWidget {
         void save_config();
         void load_config();
         void remove_config();
+        void change_color(QString config_name, QLabel* value_label);
 
     signals:
         void config_changed();
+        void color_changed();
 
     private:
         struct ConfigInput {
             QString input_name;
+            QLabel* label;
             QLineEdit* input;
         };
-        QVBoxLayout* main_layout;
+        struct ColorConfig {
+            QLabel* config_name;
+            QLabel* config_value;
+            QPushButton* color_select;
+        };
+        QGridLayout* main_layout;
         QPushButton* reset_button;
         QPushButton* save_button;
         QPushButton* load_button;
         QPushButton* remove_button;
         QVector<ConfigInput> inputs;
+        QVector<ColorConfig> color_configs;
 };
 
 #endif

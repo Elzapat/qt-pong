@@ -110,3 +110,8 @@ void Player::set_score(quint16 new_score) {
     score_text->setPlainText(QString::number(score));
     update_score_text();
 }
+
+void Player::color_changed() {
+    paddle->color_changed();
+    score_text->setDefaultTextColor(Config::get<QColor>("text_color"));
+}

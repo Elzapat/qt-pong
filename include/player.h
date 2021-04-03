@@ -28,6 +28,7 @@ class Player : public QObject {
         QGraphicsTextItem* get_score_text() const;
         quint16 get_score() const;
         void scored();
+        void color_changed();
 
     private:
         Paddle* paddle;
@@ -40,4 +41,4 @@ class Player : public QObject {
         void setup_score_text();
 };
 
-#endif
+#endif // PLAYER_H

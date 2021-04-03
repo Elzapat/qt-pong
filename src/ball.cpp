@@ -6,13 +6,14 @@ Ball::Ball() : vx(0.f), vy(0.f), is_moving(false), ball_speed(Config::get<qreal>
         Config::get<quint16>("ball_width"),
         Config::get<quint16>("ball_height")
 ) {
-    // Set ball color to white
-    const QBrush BALL_COLOR = (QBrush)Qt::white;
-    this->setBrush(BALL_COLOR);
+    this->setBrush(Config::get<QColor>("ball_color"));
 
-    // ball_speed = Config::get<qreal>("ball_speed");
-    // qDebug() << ball_speed;
-    // qDebug() << Config::get<qreal>("ball_speed");
+    // Initialize the sound effects
+    qreal sfx_volume = Config::get<qreal>("sfx_volume", "audio") / 100.0;
+    ball_bounce_sfx.setSource(QUrl::fromLocalFile("assets/audio/ball_bounce.wav"));
+    point_scored_sfx.setSource(QUrl::fromLocalFile("assets/audio/point_scored.wav"));
+    ball_bounce_sfx.setVolume(sfx_volume);
+    point_scored_sfx.setVolume(sfx_volume);
 }
 
 Ball::~Ball() {}
@@ -58,13 +59,19 @@ void Ball::collision(Paddle* p1, Paddle* p2) {
 
     // Check if the ball is colliding with the left or the right of the board
     // If so, the other player has scored
-    if (this->x() <= -board_w / 2)
+    if (this->x() <= -board_w / 2) {
+        point_scored_sfx.play();
         emit player_scored(2);
-    else if (this->x() + ball_w >= board_w / 2)
+    } else if (this->x() + ball_w >= board_w / 2) {
+        point_scored_sfx.play();
         emit player_scored(1);
+    }
 }
 
 void Ball::generate_new_angle(Paddle* p) {
+    // Play the Ball Bounce sound effect
+    ball_bounce_sfx.play();
+
     // Speed up the ball by a certain rate in percent
     // qreal ball_speed = Config::get<qreal>("ball_speed");
     qreal speed_up_rate = Config::get<qreal>("ball_speed_up_rate");
@@ -155,4 +162,13 @@ void Ball::update_new_config() {
     }
 
     if (!is_moving) reset();
+}
+
+void Ball::sfx_volume_changed(qreal volume) {
+    ball_bounce_sfx.setVolume(volume);
+    point_scored_sfx.setVolume(volume);
+}
+
+void Ball::color_changed() {
+    this->setBrush(Config::get<QColor>("ball_color"));
 }

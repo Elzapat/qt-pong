@@ -5,8 +5,7 @@ Paddle::Paddle() : QGraphicsRectItem(
         Config::get<quint16>("paddle_width"),
         Config::get<quint16>("paddle_height")
 ) {
-    const QBrush PADDLE_COLOR = (QBrush)Qt::white;
-    this->setBrush(PADDLE_COLOR);
+    this->setBrush(Config::get<QColor>("paddle_color"));
 }
 
 Paddle::~Paddle() {}
@@ -23,4 +22,8 @@ void Paddle::update_new_config() {
         this->setX(-board_width / 2 + paddle_spacing);
     else
         this->setX(board_width / 2 - paddle_spacing);
+}
+
+void Paddle::color_changed() {
+    this->setBrush(Config::get<QColor>("paddle_color"));
 }

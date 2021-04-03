@@ -28,6 +28,7 @@ add_executable(qt-pong
     src/player.cpp
     src/config_window.cpp
     src/controls_config_window.cpp
+    src/audio_config_window.cpp
     include/main_window.h
     include/scene.h
     include/ball.h
@@ -37,6 +38,7 @@ add_executable(qt-pong
     include/player.h
     include/config_window.h
     include/controls_config_window.h
+    include/audio_config_window.h
 )
 
 target_link_libraries(qt-pong

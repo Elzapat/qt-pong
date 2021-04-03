@@ -4,11 +4,12 @@ Scene::Scene(QObject* parent) : QGraphicsScene(parent), game_paused(false), back
     // Setting the background to black
     this->setBackgroundBrush(Qt::black);
 
-    // Loading and playing background music
-    music_player.setMedia(QUrl::fromLocalFile(
-        QFileInfo("assets/audio/pong3.wav").absoluteFilePath()
-    ));
-    music_player.play();
+    // Initialize the background music
+    QString nb = QRandomGenerator::global()->bounded(0, 2) ? "3" : "5";
+    background_music.setSource(QUrl::fromLocalFile("assets/audio/pong" + nb + ".wav"));
+    background_music.setLoopCount(QSoundEffect::Infinite);
+    background_music.setVolume(Config::get<qreal>("music_volume", "audio") / 100.0);
+    background_music.play();
 
     // Instanciating the game objects
     ball = new Ball;
@@ -54,7 +55,6 @@ Scene::~Scene() {
     delete p2;
     delete pause_text;
     delete middle_line;
-    delete pause_text;
     delete win_text;
 }
 
@@ -97,56 +97,43 @@ void Scene::resize_event() {
 }
 
 void Scene::keyPressEvent(QKeyEvent* event) {
+    int pressed_key = event->key();
     if (!game_paused) {
-        switch (event->key()) {
-            case Qt::Key_Z:
-                p1->set_up_pressed(true);
-                break;
-            case Qt::Key_S:
-                p1->set_down_pressed(true);
-                break;
-            case Qt::Key_O:
-                p2->set_up_pressed(true);
-                break;
-            case Qt::Key_L:
-                p2->set_down_pressed(true);
-                break;
-            case Qt::Key_Space:
-                if (!ball->is_moving()) {
-                    win_text->hide();
-                    ball->reset(PlayerPosition::Default);
-                    ball->launch();
-                }
-                break;
-            case Qt::Key_Escape:
-                pause_text->show();
-                game_paused = true;
-                break;
+        if (pressed_key == Config::get<int>("player_1_up", "controls"))
+            p1->set_up_pressed(true);
+        else if (pressed_key == Config::get<int>("player_1_down", "controls"))
+            p1->set_down_pressed(true);
+        else if (pressed_key == Config::get<int>("player_2_up", "controls"))
+            p2->set_up_pressed(true);
+        else if (pressed_key == Config::get<int>("player_2_down", "controls"))
+            p2->set_down_pressed(true);
+        else if (pressed_key == Config::get<int>("launch_ball", "controls")) {
+            if (!ball->get_is_moving()) {
+                win_text->hide();
+                ball->reset(PlayerPosition::Default);
+                ball->launch();
+            }
+        } else if (pressed_key == Config::get<int>("pause", "controls")) {
+            pause_text->show();
+            game_paused = true;
         }
-    } else {
-        switch (event->key()) {
-            case Qt::Key_Escape:
-                pause_text->hide();
-                game_paused = false;
-                break;
-        }
+    } else if (pressed_key == Config::get<int>("pause", "controls")) {
+        pause_text->hide();
+        game_paused = false;
     }
 }
 
 void Scene::keyReleaseEvent(QKeyEvent * event) {
-    switch (event->key()) {
-        case Qt::Key_Z:
-            p1->set_up_pressed(false);
-            break;
-        case Qt::Key_S:
-            p1->set_down_pressed(false);
-            break;
-        case Qt::Key_O:
-            p2->set_up_pressed(false);
-            break;
-        case Qt::Key_L:
-            p2->set_down_pressed(false);
-    }
+    int pressed_key = event->key();
+
+    if (pressed_key == Config::get<int>("player_1_up", "controls"))
+        p1->set_up_pressed(false);
+    else if (pressed_key == Config::get<int>("player_1_down", "controls"))
+        p1->set_down_pressed(false);
+    else if (pressed_key == Config::get<int>("player_2_up", "controls"))
+        p2->set_up_pressed(false);
+    else if (pressed_key == Config::get<int>("player_2_down", "controls"))
+        p2->set_down_pressed(false);
 }
 
 void Scene::setup_middle_line() {
@@ -178,6 +165,7 @@ void Scene::setup_text(QGraphicsTextItem* text, QString content) {
     text->setFont(font);
     text->setPlainText(content);
     text->setScale(text_size);
+    text->setDefaultTextColor(Config::get<QColor>("text_color"));
 
     QRectF rect = text->boundingRect();
     text->setPos((-rect.width() / 2) * text_size, (-rect.height() / 2) * text_size);
@@ -242,4 +230,31 @@ void Scene::player_won(quint8 player) {
     win_text->show();
     p1->set_score(0);
     p2->set_score(0);
+}
+
+void Scene::focusOutEvent(QFocusEvent* event) {
+    // When the scene loses focus, stop the paddles from moving further
+    p1->set_up_pressed(false);
+    p1->set_down_pressed(false);
+    p2->set_up_pressed(false);
+    p2->set_down_pressed(false);
+}
+
+void Scene::music_volume_changed(qreal volume) {
+    qDebug() << volume;
+    background_music.setVolume(volume);
+}
+
+Ball* Scene::get_ball() {
+    return ball;
+}
+
+void Scene::color_changed() {
+    QColor text_color = Config::get<QColor>("text_color");
+    pause_text->setDefaultTextColor(text_color);
+    win_text->setDefaultTextColor(text_color);
+
+    ball->color_changed();
+    p1->color_changed();
+    p2->color_changed();
 }

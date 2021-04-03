@@ -13,6 +13,7 @@ class Paddle : public QObject, public QGraphicsRectItem {
         Paddle();
         ~Paddle();
         void update_new_config();
+        void color_changed();
 };
 
-#endif
+#endif // PADDLE_H

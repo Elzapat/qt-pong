@@ -11,17 +11,20 @@ class ControlsConfigWindow : public QWidget {
     public:
         ControlsConfigWindow(QWidget* parent = 0);
         ~ControlsConfigWindow();
+        void keyPressEvent(QKeyEvent* event) override;
 
     private:
-        struct KeyEntry {
-            QLabel label;
-            QLabel key;
-            QPushButton change_button;
+        struct KeyConfig {
+            QString config_name;
+            QString key_name;
+            QLabel* label;
+            QLabel* key_label;
+            QPushButton* change_button;
+            bool listening_for_key;
         };
-        QVector<KeyEntry> key_config;
-        QVBoxLayout* v1;
-        QVBoxLayout* v2;
-        QVBoxLayout* v3;
+        QVector<KeyConfig*> key_config;
+        QGridLayout* main_layout;
+        void change_button_clicked(KeyConfig* conf);
 };
 
-#endif
+#endif // CONTROLS_CONFIG_WINDOW_H

@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QDataStream>
 #include <QRandomGenerator>
+#include <QSoundEffect>
 #include "config.h"
 #include "paddle.h"
 #include "player.h"
@@ -22,9 +23,13 @@ class Ball : public QObject, public QGraphicsRectItem {
         void launch();
         bool get_is_moving() const;
         void update_new_config();
+        void color_changed();
 
     signals:
         void player_scored(quint8 player);
+
+    public slots:
+        void sfx_volume_changed(qreal volume);
 
     private:
         qreal vy, vx;
@@ -32,7 +37,9 @@ class Ball : public QObject, public QGraphicsRectItem {
         qreal base_speed;
         bool is_moving;
         PlayerPosition side;
+        QSoundEffect ball_bounce_sfx;
+        QSoundEffect point_scored_sfx;
         void generate_new_angle(Paddle* p);
 };
 
-#endif
+#endif // BALL_H
