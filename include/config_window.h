@@ -13,7 +13,7 @@ class ConfigWindow : public QWidget {
 
     public slots:
         void reset_default_config();
-        void config_input(QString value);
+        void config_input(int value);
         void save_config();
         void load_config();
         void remove_config();
@@ -27,7 +27,7 @@ class ConfigWindow : public QWidget {
         struct ConfigInput {
             QString input_name;
             QLabel* label;
-            QLineEdit* input;
+            QSpinBox* input;
         };
         struct ColorConfig {
             QLabel* config_name;

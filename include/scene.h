@@ -15,6 +15,7 @@ class Scene : public QGraphicsScene {
         explicit Scene(QObject* parent = 0);
         ~Scene();
         Ball* get_ball();
+        Player* get_player_2();
         void resize_event();
         void keyPressEvent(QKeyEvent* event) override;
         void keyReleaseEvent(QKeyEvent* event) override;

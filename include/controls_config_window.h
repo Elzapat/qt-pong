@@ -12,6 +12,7 @@ class ControlsConfigWindow : public QWidget {
         ControlsConfigWindow(QWidget* parent = 0);
         ~ControlsConfigWindow();
         void keyPressEvent(QKeyEvent* event) override;
+        void focusOutEvent(QFocusEvent* event) override;
 
     private:
         struct KeyConfig {

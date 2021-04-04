@@ -13,7 +13,7 @@ ConfigWindow::ConfigWindow(QWidget* parent) : QWidget(parent) {
         
         if (key.contains("color")) {
             QLabel* name = new QLabel(label_text);
-            QLabel* value = new QLabel(Config::get<QString>(key));
+            QLabel* value = new QLabel(Config::get<QColor>(key).name());
             QPushButton* color_select = new QPushButton(tr("Change"));
 
             main_layout->addWidget(name, row, 0);
@@ -27,14 +27,17 @@ ConfigWindow::ConfigWindow(QWidget* parent) : QWidget(parent) {
             color_configs.push_back(ColorConfig { name, value, color_select });
         } else {
             QLabel* label = new QLabel(label_text);
-            QLineEdit* input = new QLineEdit(Config::get<QString>(key));
+            QSpinBox* input = new QSpinBox;
             main_layout->addWidget(label, row, 0);
             main_layout->addWidget(input, row++, 1, 1, 2);
 
-            input->setValidator(new QIntValidator(1, 9999, this));
+            input->setRange(1, 9999);
+            input->setValue(Config::get<int>(key));
+
+            // input->setValidator(new QIntValidator(1, 9999, this));
 
             inputs.push_back(ConfigInput { key, label, input });
-            this->connect(input, SIGNAL(textChanged(QString)), this, SLOT(config_input(QString)));
+            this->connect(input, SIGNAL(valueChanged(int)), this, SLOT(config_input(int)));
         }
     }
 
@@ -77,7 +80,7 @@ void ConfigWindow::reset_default_config() {
     Config::reset_to_default();
 
     for (auto [input_name, _, input] : inputs)
-        input->setText(Config::get<QString>(input_name));
+        input->setValue(Config::get<int>(input_name));
     for (auto [config_name, value, _] : color_configs) {
         QString name = config_name->text();
         QString key = name.replace(' ', '_').replace(0, 1, name[0].toLower());
@@ -87,15 +90,15 @@ void ConfigWindow::reset_default_config() {
     emit color_changed();
 }
 
-void ConfigWindow::config_input(QString value) {
+void ConfigWindow::config_input(int value) {
     for (auto [input_name, _, input] : inputs) {
-        if (input->text() == value) {
+        if (input->value() == value) {
             Config::set(input_name, value);
         }
     }
-    QIntValidator validator(1, 9999);
-    int pos = 0;
-    if (validator.validate(value, pos) == QValidator::Acceptable)
+    // QIntValidator validator(1, 9999);
+    // int pos = 0;
+    // if (validator.validate(value, 0) == QValidator::Acceptable)
         emit config_changed();
 }
 
@@ -123,7 +126,7 @@ void ConfigWindow::load_config() {
     if (!ok) return;
 
     for (auto [input_name, _, input] : inputs)
-        input->setText(Config::get<QString>(input_name, config_name));
+        input->setValue(Config::get<int>(input_name, config_name));
 }
 
 void ConfigWindow::remove_config() {

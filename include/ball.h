@@ -27,6 +27,7 @@ class Ball : public QObject, public QGraphicsRectItem {
 
     signals:
         void player_scored(quint8 player);
+        void ball_bounce_paddle(QPointF ball_pos, qreal ball_angle, int player);
 
     public slots:
         void sfx_volume_changed(qreal volume);
@@ -39,7 +40,7 @@ class Ball : public QObject, public QGraphicsRectItem {
         PlayerPosition side;
         QSoundEffect ball_bounce_sfx;
         QSoundEffect point_scored_sfx;
-        void generate_new_angle(Paddle* p);
+        void generate_new_angle(Paddle* p, int player);
 };
 
 #endif // BALL_H

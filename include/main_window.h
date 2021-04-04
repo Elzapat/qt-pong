@@ -18,9 +18,9 @@ class MainWindow : public QMainWindow {
         ~MainWindow();
 
     private:
-        QMenu* file_menu;
         QMenu* config_menu;
         QMenu* help_menu;
+        QMenu* game_menu;
         View* view;
         ConfigWindow* config_window;
         ControlsConfigWindow* controls_config_window;
@@ -31,6 +31,7 @@ class MainWindow : public QMainWindow {
         QAction* show_config_window;
         QAction* show_controls_config_window;
         QAction* show_audio_config_window;
+        QAction* set_p2_computer;
 };
 
 #endif

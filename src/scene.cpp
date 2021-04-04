@@ -46,6 +46,16 @@ Scene::Scene(QObject* parent) : QGraphicsScene(parent), game_paused(false), back
 
     // Connect to the signal the ball emits when a player scores
     this->connect(ball, SIGNAL(player_scored(quint8)), this, SLOT(player_scored(quint8)));
+
+    // When the ball bounces off a paddle, we notify player 2
+    // Only used when player 2 is a computer, the purpose of the SIGNAL/SLOT
+    // is the compute the goal of the computer paddle
+    // If the ball bounced off the player 2's paddle, just set its goal to 0;0
+    this->connect(ball, &Ball::ball_bounce_paddle, p2, [this](QPointF p, qreal a, int player) {
+        if (!p2->get_is_computer()) return;
+        if (player == 2) p2->set_goal(0.f);
+        else p2->calculate_goal(p, a);
+    });
 }
 
 Scene::~Scene() {
@@ -63,8 +73,8 @@ void Scene::update() {
 
     ball->move();
     ball->collision(p1->get_paddle(), p2->get_paddle());
-    p1->update();
-    p2->update();
+    p1->update(ball->y());
+    p2->update(ball->y());
 
     quint16 b_w = Config::get<quint16>("board_width");
     quint16 b_h = Config::get<quint16>("board_height");
@@ -247,6 +257,10 @@ void Scene::music_volume_changed(qreal volume) {
 
 Ball* Scene::get_ball() {
     return ball;
+}
+
+Player* Scene::get_player_2() {
+    return p2;
 }
 
 void Scene::color_changed() {

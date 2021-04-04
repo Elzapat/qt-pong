@@ -3,6 +3,7 @@
 ControlsConfigWindow::ControlsConfigWindow(QWidget* parent) : QWidget(parent) {
     this->setWindowIcon(QIcon("assets/images/settings.png"));
     this->setWindowTitle(tr("Controls Config"));
+    this->setFocus();
 
     main_layout = new QGridLayout;
 
@@ -58,9 +59,12 @@ ControlsConfigWindow::~ControlsConfigWindow() {
 }
 
 void ControlsConfigWindow::change_button_clicked(KeyConfig* conf) {
+    // Set the focus back on the entire widget so I can detect when
+    // the user focuses out of the widget
+    this->setFocus();
     // Setting all the key configs to default, and not listening
     // so the user can't set two keys at the same time
-    for (auto& key_conf : key_config) {
+    for (auto& key_conf: key_config) {
         key_conf->key_label->setText(key_conf->key_name);
         key_conf->listening_for_key = false;
     }
@@ -72,7 +76,6 @@ void ControlsConfigWindow::change_button_clicked(KeyConfig* conf) {
 }
 
 void ControlsConfigWindow::keyPressEvent(QKeyEvent* event) {
-
     for (auto& conf : key_config) {
         if (conf->listening_for_key) {
             conf->listening_for_key = false;
@@ -82,7 +85,7 @@ void ControlsConfigWindow::keyPressEvent(QKeyEvent* event) {
 
             // If the key is already set for another config,
             // cancel the key listening;
-            for (auto& other_conf : key_config) {
+            for (auto& other_conf: key_config) {
                 if (other_conf->key_name == key_name) {
                     conf->key_label->setText(conf->key_name);
                     return;
@@ -96,5 +99,13 @@ void ControlsConfigWindow::keyPressEvent(QKeyEvent* event) {
             conf->key_name = key_name;
             conf->key_label->setText(key_name);
         }
+    }
+}
+
+void ControlsConfigWindow::focusOutEvent(QFocusEvent* event) {
+    // When the widget loses focus, we stop listening for key input
+    for (auto& conf: key_config) {
+        conf->key_label->setText(conf->key_name);
+        conf->listening_for_key = false;
     }
 }

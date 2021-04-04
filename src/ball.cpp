@@ -43,9 +43,9 @@ void Ball::collision(Paddle* p1, Paddle* p2) {
     // If so, send it back with a different angle depending
     // on where the ball collided with the paddle
     if (this->collidesWithItem(p1))
-        generate_new_angle(p1);
+        generate_new_angle(p1, 1);
     else if (this->collidesWithItem(p2))
-        generate_new_angle(p2);
+        generate_new_angle(p2, 2);
 
     // Check if the ball is colliding with the top or the bottom of the board
     // If so invert its y axis velocity
@@ -68,7 +68,7 @@ void Ball::collision(Paddle* p1, Paddle* p2) {
     }
 }
 
-void Ball::generate_new_angle(Paddle* p) {
+void Ball::generate_new_angle(Paddle* p, int player) {
     // Play the Ball Bounce sound effect
     ball_bounce_sfx.play();
 
@@ -109,6 +109,8 @@ void Ball::generate_new_angle(Paddle* p) {
     qreal direction = p->x() > 0 ? -1 : 1;
     vx = direction * ball_speed * qCos(new_angle);
     vy = ball_speed * -qSin(new_angle);
+
+    emit ball_bounce_paddle(this->pos(), new_angle, player);
 }
 
 void Ball::reset(PlayerPosition new_side) {
@@ -138,8 +140,11 @@ void Ball::launch() {
     qint8 dir = side == PlayerPosition::Left ? 1 : -1;
 
     vx = dir * ball_speed * qCos(random_angle);
-    vy = ball_speed * qSin(random_angle);
+    vy = ball_speed * -qSin(random_angle);
     is_moving = true;
+
+    int player = side == PlayerPosition::Left ? 1 : 2;
+    emit ball_bounce_paddle(this->pos(), random_angle, player);
 }
 
 bool Ball::get_is_moving() const {
