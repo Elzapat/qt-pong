@@ -9,7 +9,7 @@ class ControlsConfigWindow : public QWidget {
     Q_OBJECT
 
     public:
-        ControlsConfigWindow(QWidget* parent = 0);
+        explicit ControlsConfigWindow(QWidget* parent = 0);
         ~ControlsConfigWindow();
         void keyPressEvent(QKeyEvent* event) override;
         void focusOutEvent(QFocusEvent* event) override;

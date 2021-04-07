@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     config_window = new ConfigWindow;
     controls_config_window = new ControlsConfigWindow;
     audio_config_window = new AudioConfigWindow;
+    multiplayer_window = new MultiplayerWindow;
 
     config_menu = menuBar()->addMenu(tr("Config"));
     help_menu = menuBar()->addMenu(tr("Help"));
@@ -35,9 +36,10 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
     // Instanciating and adding actions to the Game menu
     set_p2_computer = new QAction(tr("Set P2 as Computer"));
+    show_multiplayer_window = new QAction(tr("Multiplayer"), this);
     game_menu->addAction(set_p2_computer);
+    game_menu->addAction(show_multiplayer_window);
     
-
     // Config menu actions
     this->connect(add_background_image, SIGNAL(triggered()), view->get_scene(), SLOT(set_background_image()));
     this->connect(remove_background_image, SIGNAL(triggered()), view->get_scene(), SLOT(remove_background_image()));
@@ -53,6 +55,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
     // Game menu actions
     this->connect(set_p2_computer, SIGNAL(triggered()), view->get_scene()->get_player_2(), SLOT(set_computer()));
+    this->connect(show_multiplayer_window, SIGNAL(triggered()), multiplayer_window, SLOT(show()));
 
     // Update the config with the current board height and width
     Config::set("board_width", view->width());
@@ -69,6 +72,7 @@ MainWindow::~MainWindow() {
     delete config_window;
     delete controls_config_window;
     delete audio_config_window;
+    delete multiplayer_window;
     delete add_background_image;
     delete remove_background_image;
     delete show_config_window;

@@ -9,6 +9,7 @@
 #include "config_window.h"
 #include "controls_config_window.h"
 #include "audio_config_window.h"
+#include "multiplayer_window.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -25,12 +26,14 @@ class MainWindow : public QMainWindow {
         ConfigWindow* config_window;
         ControlsConfigWindow* controls_config_window;
         AudioConfigWindow* audio_config_window;
+        MultiplayerWindow* multiplayer_window;
 
         QAction* add_background_image;
         QAction* remove_background_image;
         QAction* show_config_window;
         QAction* show_controls_config_window;
         QAction* show_audio_config_window;
+        QAction* show_multiplayer_window;
         QAction* set_p2_computer;
 };
 

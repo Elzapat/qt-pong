@@ -5,7 +5,6 @@ set(qt-pong VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -15,7 +14,7 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-find_package(Qt5 COMPONENTS Widgets Multimedia REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Multimedia Network REQUIRED)
 
 add_executable(qt-pong
     src/main.cpp
@@ -29,6 +28,7 @@ add_executable(qt-pong
     src/config_window.cpp
     src/controls_config_window.cpp
     src/audio_config_window.cpp
+    src/multiplayer_window.cpp
     include/main_window.h
     include/scene.h
     include/ball.h
@@ -39,10 +39,12 @@ add_executable(qt-pong
     include/config_window.h
     include/controls_config_window.h
     include/audio_config_window.h
+    include/multiplayer_window.h
 )
 
 target_link_libraries(qt-pong
     PUBLIC
     Qt5::Widgets
     Qt5::Multimedia
+    Qt5::Network
 )

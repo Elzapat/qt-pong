@@ -152,7 +152,7 @@ void ConfigWindow::change_color(QString config_name, QLabel* value_label) {
     QColor chosen_color = QColorDialog::getColor(value_label->text());
 
     value_label->setText(chosen_color.name());
-    Config::set(config_name, chosen_color);
+    Config::set(config_name, chosen_color.name());
 
     emit color_changed();
 }
