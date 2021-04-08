@@ -1,0 +1,7 @@
+.ccls-cache/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+qt-pong
+qt-pong_autogen/

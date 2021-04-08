@@ -12,7 +12,7 @@ class MultiplayerWindow : public QWidget {
         ~MultiplayerWindow();
 
     public slots:
-        void read_socket();
+        void ready_read();
 
     private:
         struct Lobby {
@@ -25,7 +25,7 @@ class MultiplayerWindow : public QWidget {
         void send_command(QString command, QStringList args = QStringList());
         void show_lobbies(int number, QStringList lobbies_str);
         void join_lobby(int lobby_id);
-        QUdpSocket* socket;
+        QTcpSocket socket;
         QGridLayout* main_layout;
         QGroupBox* lobbies_box;
         QVBoxLayout* lobbies_layout;

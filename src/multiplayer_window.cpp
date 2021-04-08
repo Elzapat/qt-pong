@@ -3,31 +3,13 @@
 const QHostAddress HOST_ADDRESS("127.0.0.1");
 
 MultiplayerWindow::MultiplayerWindow(QWidget* parent) : QWidget(parent), is_in_lobby(false) {
-    socket = new QUdpSocket(this);
-    socket->connectToHost(HOST_ADDRESS, 2929);
+    socket.connectToHost(HOST_ADDRESS, 2929);
 
     main_layout = new QGridLayout;
     lobbies_layout = new QVBoxLayout;
 
     main_layout->setSizeConstraint(QLayout::SetFixedSize);
 
-    // QLabel* label = new QLabel;
-    // label->setFrameShape(QFrame::Box);
-    // label->setFrameShadow(QFrame::Sunken);
-    // label->setMidLineWidth(2);
-    // label->setLineWidth(1);
-
-    // QFrame* frame = new QFrame;
-    // frame->setFrameShape(QFrame::Box);
-    // frame->setFrameShadow(QFrame::Sunken);
-    // frame->setLineWidth(1);
-    // frame->setMidLineWidth(2);
-    // // frame->setStyleSheet("padding: 100px;");
-    // frame->setLayout(main_layout);
-
-    // command_input = new QLineEdit(frame);
-    // command_input->setFrame(true);
-    // send_button = new QPushButton("Send command", frame);
     lobbies_box = new QGroupBox(tr("Lobbies"));
     create_lobby_button = new QPushButton(tr("Create Lobby"));
     refresh_button = new QPushButton(tr("Refresh"));
@@ -36,22 +18,13 @@ MultiplayerWindow::MultiplayerWindow(QWidget* parent) : QWidget(parent), is_in_l
     main_layout->addWidget(create_lobby_button, 1, 0);
     main_layout->addWidget(refresh_button, 1, 1);
 
-    // main_layout->addWidget(frame, 0, 0, 2, 1);
-    // main_layout->addWidget(command_input, 0, 0);
-    // main_layout->addWidget(send_button, 1, 0);
-    // main_layout->setContentsMargins(QMargins(50, 50, 50, 50));
-
-    this->connect(socket, SIGNAL(readyRead()), this, SLOT(read_socket()));
+    this->connect(&socket, SIGNAL(readyRead()), this, SLOT(ready_read()));
     this->connect(create_lobby_button, &QPushButton::clicked, this, [this]() { send_command("create_lobby"); });
     this->connect(refresh_button, &QPushButton::clicked, this, [this]() { send_command("lobbies"); });
-    // connect(send_button, SIGNAL(clicked()), this, SLOT(send_command()));
 
     lobbies_box->setLayout(lobbies_layout);
     this->setLayout(main_layout);
-    // QHBoxLayout* layout = new QHBoxLayout;
-    // layout->addWidget(frame);
-    // this->setLayout(layout);
-    
+
     refresh_timer = new QTimer(this);
     this->connect(refresh_timer, &QTimer::timeout, this, [this]() { send_command("lobbies"); });
     refresh_timer->start(3000);
@@ -62,31 +35,24 @@ MultiplayerWindow::~MultiplayerWindow() {
     delete refresh_timer;
     delete lobbies_layout;
     delete lobbies_box;
-    delete socket;
     delete refresh_button;
     delete create_lobby_button;
 }
 
-void MultiplayerWindow::read_socket() {
-    while (socket->hasPendingDatagrams()) {
-        QNetworkDatagram datagram = socket->receiveDatagram();
-        QList<QByteArray> args_bytes = datagram.data().split(';');
+void MultiplayerWindow::ready_read() {
+    QByteArray data = socket.readAll();
 
-        QStringList args;
-        foreach(const QByteArray& arg, args_bytes) {
-            args.append(QString::fromLocal8Bit(arg));
-        }
+    qDebug() << "reveived packet: " << data;
+    QStringList args;
+    for (QByteArray arg_bytes : data.split(';'))
+        args.append(QString::fromLocal8Bit(arg_bytes));
 
-        qDebug() << args;
-
-        if (args[0] == "lobbies") {
-            int number = args[1].toInt();
-            args.pop_front(); args.pop_front();
-            show_lobbies(number, args);
-        } else if (args[0] == "lobby_joined") {
-            join_lobby(args[1].toInt());
-        }
-    }
+    if (args[0] == "lobbies") {
+        int number = args[1].toInt();
+        args.pop_front(); args.pop_front();
+        show_lobbies(number, args);
+    } else if (args[0] == "lobby_joined")
+        join_lobby(args[1].toInt());
 }
 
 void MultiplayerWindow::send_command(QString command, QStringList args) {
@@ -94,7 +60,7 @@ void MultiplayerWindow::send_command(QString command, QStringList args) {
     for (const QString& arg : args)
         datagram += arg + ';';
 
-    socket->writeDatagram(datagram.toLocal8Bit());
+    socket.write(datagram.toLocal8Bit());
 }
 
 void MultiplayerWindow::show_lobbies(int number, QStringList lobbies_str) {
@@ -153,6 +119,7 @@ void MultiplayerWindow::show_lobbies(int number, QStringList lobbies_str) {
 
 void MultiplayerWindow::join_lobby(int lobby_id) {
     refresh_timer->stop();
+    is_in_lobby = true;
 
     auto it = lobbies.begin();
     while (it != lobbies.end()) {
