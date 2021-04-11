@@ -6,6 +6,7 @@ ControlsConfigWindow::ControlsConfigWindow(QWidget* parent) : QWidget(parent) {
     this->setFocus();
 
     main_layout = new QGridLayout;
+    main_layout->setSizeConstraint(QLayout::SetFixedSize);
 
     QStringList controls = Config::get_all_keys("controls");
     int row = 0;

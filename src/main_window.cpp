@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
     // Game menu actions
     this->connect(set_p2_computer, SIGNAL(triggered()), view->get_scene()->get_player_2(), SLOT(set_computer()));
-    this->connect(show_multiplayer_window, SIGNAL(triggered()), multiplayer_window, SLOT(show()));
+    this->connect(show_multiplayer_window, SIGNAL(triggered()), multiplayer_window, SLOT(show_window()));
 
     // Update the config with the current board height and width
     Config::set("board_width", view->width());

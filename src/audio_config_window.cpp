@@ -3,9 +3,9 @@
 AudioConfigWindow::AudioConfigWindow(QWidget* parent) : QWidget(parent) {
     this->setWindowIcon(QIcon("assets/images/settings.png"));
     this->setWindowTitle(tr("Audio Config"));
-    // this->setFixedSize(this->size());
 
     main_layout = new QGridLayout;
+    main_layout->setSizeConstraint(QLayout::SetFixedSize);
 
     music_volume = new QSlider(Qt::Horizontal);
     sfx_volume = new QSlider(Qt::Horizontal);

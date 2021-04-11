@@ -5,6 +5,7 @@ ConfigWindow::ConfigWindow(QWidget* parent) : QWidget(parent) {
     this->setWindowTitle(tr("Config"));
 
     main_layout = new QGridLayout;
+    main_layout->setSizeConstraint(QLayout::SetFixedSize);
 
     int row = 0;
     foreach (const QString& key, Config::get_all_keys()) {
@@ -99,7 +100,7 @@ void ConfigWindow::config_input(int value) {
     // QIntValidator validator(1, 9999);
     // int pos = 0;
     // if (validator.validate(value, 0) == QValidator::Acceptable)
-        emit config_changed();
+    emit config_changed();
 }
 
 void ConfigWindow::save_config() {
@@ -120,6 +121,12 @@ void ConfigWindow::save_config() {
 void ConfigWindow::load_config() {
     bool ok;
     QStringList groups = Config::get_groups();
+
+    QStringList to_remove = { "audio", "controls", "controls_default" };
+    groups.erase(std::remove_if(groups.begin(), groups.end(), [&](const QString& s) {
+        return to_remove.contains(s);
+    }), groups.end());
+
     QString config_name = QInputDialog::getItem(this, tr("Choose a configuration"),
                                         tr("Choose a configuration to load"), groups,
                                         0, false, &ok);
@@ -132,8 +139,11 @@ void ConfigWindow::load_config() {
 void ConfigWindow::remove_config() {
     bool ok;
     QStringList groups = Config::get_groups();
-    int index = groups.indexOf("default");
-    groups.removeAt(index);
+    QStringList to_remove = { "default", "audio", "controls", "controls_default" };
+
+    groups.erase(std::remove_if(groups.begin(), groups.end(), [&](const QString& s) {
+        return to_remove.contains(s);
+    }), groups.end());
 
     if (groups.isEmpty()) {
         QMessageBox::information(this, tr("No saved configuration"),

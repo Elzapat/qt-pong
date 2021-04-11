@@ -2,6 +2,7 @@
 #define CONFIG_WINDOW_H
 
 #include <QtWidgets>
+#include <algorithm>
 #include "config.h"
 
 class ConfigWindow : public QWidget {
