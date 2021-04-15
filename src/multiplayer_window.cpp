@@ -7,14 +7,14 @@ MultiplayerWindow::MultiplayerWindow(QWidget* parent) :
     QWidget(parent), is_in_lobby(false), joined_lobby_id(-1) {
 
     main_layout = new QGridLayout;
-    lobbies_layout = new QVBoxLayout;
+    lobbies_layout = new QVBoxLayout(this);
 
     main_layout->setSizeConstraint(QLayout::SetFixedSize);
 
-    lobbies_box = new QGroupBox(tr("Lobbies"));
-    create_lobby_button = new QPushButton(tr("Create Lobby"));
-    refresh_button = new QPushButton(tr("Refresh"));
-    reconnect_button = new QPushButton(tr("Reconnect"));
+    lobbies_box = new QGroupBox(tr("Lobbies"), this);
+    create_lobby_button = new QPushButton(tr("Create Lobby"), this);
+    refresh_button = new QPushButton(tr("Refresh"), this);
+    reconnect_button = new QPushButton(tr("Reconnect"), this);
     reconnect_button->hide();
 
     main_layout->addWidget(lobbies_box, 0, 0, 1, 2);
@@ -46,10 +46,6 @@ MultiplayerWindow::MultiplayerWindow(QWidget* parent) :
 MultiplayerWindow::~MultiplayerWindow() {
     delete main_layout;
     delete refresh_timer;
-    delete lobbies_layout;
-    delete lobbies_box;
-    delete refresh_button;
-    delete create_lobby_button;
     for (Lobby& lobby : lobbies)
         delete lobby.frame;
 }
