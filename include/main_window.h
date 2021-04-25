@@ -18,6 +18,9 @@ class MainWindow : public QMainWindow {
         explicit MainWindow(QWidget* parent = 0);
         ~MainWindow();
 
+    public slots:
+        void fullscreen();
+
     private:
         QMenu* config_menu;
         QMenu* help_menu;

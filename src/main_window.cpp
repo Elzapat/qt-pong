@@ -39,6 +39,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     show_multiplayer_window = new QAction(tr("Multiplayer"), this);
     game_menu->addAction(set_p2_computer);
     game_menu->addAction(show_multiplayer_window);
+
+    // Scene signals
+    this->connect(scene, SIGNAL(fullscreen()), this, SLOT(fullscreen()));
     
     // Config menu actions
     this->connect(add_background_image, SIGNAL(triggered()), view->get_scene(), SLOT(set_background_image()));
@@ -78,4 +81,15 @@ MainWindow::~MainWindow() {
     delete show_config_window;
     delete show_controls_config_window;
     delete set_p2_computer;
+}
+
+void MainWindow::fullscreen() {
+    if (this->windowState() != Qt::WindowFullScreen) {
+        menuBar()->setVisible(false);
+        this->setWindowState(Qt::WindowFullScreen);
+    } else  {
+        menuBar()->setVisible(true);
+        this->setWindowState(Qt::WindowNoState);
+        this->setWindowState(Qt::WindowMaximized);
+    }
 }

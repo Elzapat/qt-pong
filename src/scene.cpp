@@ -52,10 +52,10 @@ Scene::Scene(QObject* parent) : QGraphicsScene(parent), game_paused(false), back
     // is the compute the goal of the computer paddle
     // If the ball bounced off the player 2's paddle, just set its goal to 0;0
     this->connect(ball, &Ball::ball_bounce_paddle, p2, [this](QPointF p, qreal a, int player) {
-        if (!p2->get_is_computer()) return;
-        if (player == 2) p2->set_goal(0.f);
-        else p2->calculate_goal(p, a);
-    });
+            if (!p2->get_is_computer()) return;
+            if (player == 2) p2->set_goal(0.f);
+            else p2->calculate_goal(p, a);
+            });
 }
 
 Scene::~Scene() {
@@ -131,6 +131,9 @@ void Scene::keyPressEvent(QKeyEvent* event) {
         pause_text->hide();
         game_paused = false;
     }
+
+    if (pressed_key == Config::get<int>("fullscreen", "controls"))
+        emit fullscreen();
 }
 
 void Scene::keyReleaseEvent(QKeyEvent * event) {
@@ -162,7 +165,7 @@ void Scene::setup_middle_line() {
 
 void Scene::update_middle_line() {
     quint16 b_h = Config::get<quint16>("board_height");
-    middle_line->setLine(-10, -b_h / 2, -10, b_h / 2);
+    middle_line->setLine(-10, -b_h, -10, b_h);
 }
 
 void Scene::setup_text(QGraphicsTextItem* text, QString content) {
@@ -177,6 +180,13 @@ void Scene::setup_text(QGraphicsTextItem* text, QString content) {
     text->setScale(text_size);
     text->setDefaultTextColor(Config::get<QColor>("text_color"));
 
+    QRectF rect = text->boundingRect();
+    text->setPos((-rect.width() / 2) * text_size, (-rect.height() / 2) * text_size);
+}
+
+void Scene::update_text(QGraphicsTextItem* text) {
+    quint16 text_size = Config::get<quint16>("text_size");
+    text->setScale(text_size);
     QRectF rect = text->boundingRect();
     text->setPos((-rect.width() / 2) * text_size, (-rect.height() / 2) * text_size);
 }
@@ -229,8 +239,8 @@ void Scene::update_new_config() {
     p1->update_new_config();
     p2->update_new_config();
     update_timer->start((1.f / Config::get<qreal>("fps")) * 1000.f);
-    pause_text->setScale(Config::get<qreal>("text_size"));
-    win_text->setScale(Config::get<qreal>("text_size"));
+    update_text(pause_text);
+    update_text(win_text);
     QGraphicsScene::update(-b_w / 2, -b_h / 2, b_w, b_h);
 }
 

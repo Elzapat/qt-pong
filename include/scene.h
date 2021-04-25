@@ -31,6 +31,9 @@ class Scene : public QGraphicsScene {
         void color_changed();
         void music_volume_changed(qreal volume);
 
+    signals:
+        void fullscreen();
+
     private:
         QTimer* update_timer;
         Ball* ball;
@@ -45,6 +48,7 @@ class Scene : public QGraphicsScene {
         QSoundEffect background_music;
         void setup_middle_line();
         void setup_text(QGraphicsTextItem* text, QString content);
+        void update_text(QGraphicsTextItem* text);
         void update_middle_line();
         void update_background_image();
         void player_won(quint8 player);
