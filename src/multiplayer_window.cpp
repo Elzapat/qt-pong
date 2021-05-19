@@ -185,10 +185,10 @@ void MultiplayerWindow::socket_state_change(QAbstractSocket::SocketState state) 
 }
 
 void MultiplayerWindow::show_window(bool multiplayer_active) {
-    // if (multiplayer_active) {
-    //     QMessageBox::information(nullptr, tr("Info"), tr("You're already in a multiplayer game"));
-    //     return;
-    // }
+    if (multiplayer_active) {
+        QMessageBox::information(nullptr, tr("Info"), tr("You're already in a multiplayer game"));
+        return;
+    }
 
     if (socket == nullptr) {
         socket = new QTcpSocket;

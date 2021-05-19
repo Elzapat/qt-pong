@@ -33,6 +33,16 @@ Scene::Scene(QObject* parent) :
     setup_text(win_text, "Player 1 won!");
     win_text->hide();
 
+    // Place a text on the top right hand corner indicating player 1
+    p1_text = new QGraphicsTextItem;
+    setup_text(p1_text, "P1");
+    update_player_text(p1_text, 1);
+
+    // Place a text on the top right hand corner indicating player 2
+    p2_text = new QGraphicsTextItem;
+    setup_text(p2_text, "P2");
+    update_player_text(p2_text, 2);
+
     // Adding the game objects to the scene
     this->addItem(p1->get_paddle());
     this->addItem(p2->get_paddle());
@@ -42,6 +52,8 @@ Scene::Scene(QObject* parent) :
     this->addItem(ball);
     this->addItem(pause_text);
     this->addItem(win_text);
+    this->addItem(p1_text);
+    this->addItem(p2_text);
 
     // Timer which is going to update every game object each frame
     update_timer = new QTimer(this);
@@ -69,6 +81,8 @@ Scene::~Scene() {
     delete p2;
     delete pause_text;
     delete middle_line;
+    delete p1_text;
+    delete p2_text;
     delete win_text;
 }
 
@@ -111,6 +125,8 @@ void Scene::resize_event() {
     p2->update_paddle();
     p1->update_score_text();
     p2->update_score_text();
+    update_player_text(p1_text, 1);
+    update_player_text(p2_text, 2);
     update_middle_line();
     update_background_image();
     ball->reset(PlayerPosition::Default);
@@ -263,13 +279,6 @@ void Scene::update_background_image() {
 }
 
 void Scene::update_new_config() {
-    // Prevents the player from changing the config during a multiplayer game
-    if (multiplayer_game != nullptr) {
-        QMessageBox::warning(nullptr, tr("Config not available"),
-                tr("You cannot change the config during a multiplayer game."));
-        return;
-    }
-
     quint16 b_w = Config::get<quint16>("board_width");
     quint16 b_h = Config::get<quint16>("board_height");
 
@@ -280,13 +289,15 @@ void Scene::update_new_config() {
     update_timer->start((1.f / Config::get<qreal>("fps")) * 1000.f);
     update_text(pause_text);
     update_text(win_text);
+    update_player_text(p1_text, 1);
+    update_player_text(p2_text, 2);
     QGraphicsScene::update(-b_w / 2, -b_h / 2, b_w, b_h);
 }
 
 void Scene::player_won(int player) {
     // Display the player who won on the screen and reset the scores
     QString text = "Player " + QString::number(player) + " won!";
-    win_text->setPlainText(tr(text.toStdString().c_str()));
+    win_text->setPlainText(text);
     win_text->show();
     p1->set_score(0);
     p2->set_score(0);
@@ -321,6 +332,8 @@ void Scene::color_changed() {
     QColor text_color = Config::get<QColor>("text_color");
     pause_text->setDefaultTextColor(text_color);
     win_text->setDefaultTextColor(text_color);
+    p1_text->setDefaultTextColor(text_color);
+    p2_text->setDefaultTextColor(text_color);
 
     ball->color_changed();
     p1->color_changed();
@@ -335,9 +348,14 @@ void Scene::start_multiplayer_game(QTcpSocket* server) {
 
     multiplayer_game = new MultiplayerGame(server);
 
+    // If the player 2 is currently a computer, change the CP text to P2
+    if (p2->get_is_computer())
+        p2_text->setPlainText("P2");
+
     // Reconfigure the game to a blank game
     Config::reset_to_default();
     update_new_config();
+    color_changed();
     resize_event();
     p1->set_score(0);
     p2->set_score(0);
@@ -351,10 +369,13 @@ void Scene::start_multiplayer_game(QTcpSocket* server) {
     // Two seconds after game start, color the paddle of the player yellow
     QTimer::singleShot(2000, [this] {
         if (multiplayer_game == nullptr) return;
-        if (multiplayer_game->get_side() == 1)
+        if (multiplayer_game->get_side() == 1) {
             p1->get_paddle()->set_color(QColor("#FFFF00"));
-        else if (multiplayer_game->get_side() == 2)
+            p1_text->setDefaultTextColor(QColor("#FFFF00"));
+        } else if (multiplayer_game->get_side() == 2) {
             p2->get_paddle()->set_color(QColor("#FFFF00"));
+            p2_text->setDefaultTextColor(QColor("#FFFF00"));
+        }
     });
 
     // Enable the ability to disconnect from the window menus
@@ -398,11 +419,16 @@ void Scene::multiplayer_game_end() {
     // Reconfigure the game to not multiplayer
     Config::reset_to_default();
     update_new_config();
-    // color_changed();
+    color_changed();
 
     p1->set_score(0);
     p2->set_score(0);
     // ball->reset();
+
+    // If the player 2 was a computer before the multiplayer game starting, set
+    // the CP tag back
+    if (p2->get_is_computer())
+        p2_text->setPlainText("CP");
 }
 
 bool Scene::is_multiplayer() {
@@ -411,4 +437,27 @@ bool Scene::is_multiplayer() {
 
 MultiplayerGame* Scene::get_multiplayer_game() const {
     return multiplayer_game;
+}
+
+void Scene::update_player_text(QGraphicsTextItem* text, int player) {
+    qreal scale = Config::get<qreal>("text_size") / 3.f;
+    text->setScale(scale);
+
+    const qreal SPACING = 2.f;
+    qreal x;
+    if (player == 1)
+        x = -Config::get<qreal>("board_width") / 2.f + SPACING;
+    else
+        x = Config::get<qreal>("board_width") / 2.f //- SPACING
+                - text->boundingRect().width() * scale;
+        
+    text->setPos(x, -Config::get<qreal>("board_height") / 2.f + SPACING);
+}
+
+void Scene::set_p2_computer() {
+    if (multiplayer_game != nullptr)
+        return;
+
+    p2->set_computer();
+    p2_text->setPlainText(p2->get_is_computer() ? "CP" : "P2");
 }

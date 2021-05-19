@@ -3,6 +3,7 @@
 MultiplayerGame::MultiplayerGame(QTcpSocket* s) : server(s), side(0) {
     this->connect(server, SIGNAL(readyRead()), this, SLOT(ready_read()));
     this->connect(server, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(disconnect_socket()));
+    this->connect(server, &QAbstractSocket::disconnected, this, [this] { emit multiplayer_game_end(); });;
 }
 
 MultiplayerGame::~MultiplayerGame() {

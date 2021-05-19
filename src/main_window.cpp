@@ -50,7 +50,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     // Config menu actions
     this->connect(add_background_image, SIGNAL(triggered()), view->get_scene(), SLOT(set_background_image()));
     this->connect(remove_background_image, SIGNAL(triggered()), view->get_scene(), SLOT(remove_background_image()));
-    this->connect(show_config_window, SIGNAL(triggered()), config_window, SLOT(show()));
+    this->connect(show_config_window, &QAction::triggered, config_window, [this] { config_window->show_window(view->get_scene()->is_multiplayer()); });
     this->connect(show_controls_config_window, SIGNAL(triggered()), controls_config_window, SLOT(show()));
     this->connect(show_audio_config_window, SIGNAL(triggered()), audio_config_window, SLOT(show()));
 
@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     this->connect(audio_config_window, SIGNAL(sfx_volume_changed(qreal)), view->get_scene()->get_ball(), SLOT(sfx_volume_changed(qreal)));
 
     // Game menu actions
-    this->connect(set_p2_computer, SIGNAL(triggered()), view->get_scene()->get_player_2(), SLOT(set_computer()));
+    this->connect(set_p2_computer, SIGNAL(triggered()), view->get_scene(), SLOT(set_p2_computer()));
     this->connect(show_multiplayer_window, &QAction::triggered, multiplayer_window, [this] { multiplayer_window->show_window(view->get_scene()->is_multiplayer()); });
     this->connect(multiplayer_window, SIGNAL(start_game(QTcpSocket*)), view->get_scene(), SLOT(start_multiplayer_game(QTcpSocket*)));
 

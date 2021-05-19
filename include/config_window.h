@@ -13,6 +13,7 @@ class ConfigWindow : public QWidget {
         ~ConfigWindow();
 
     public slots:
+        void show_window(bool multiplayer_active);
         void reset_default_config();
         void config_input(int value);
         void save_config();

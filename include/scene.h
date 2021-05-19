@@ -34,6 +34,7 @@ class Scene : public QGraphicsScene {
         void update_new_config();
         void color_changed();
         void music_volume_changed(qreal volume);
+        void set_p2_computer();
         void start_multiplayer_game(QTcpSocket* server);
         void multiplayer_ball_move(qreal x, qreal y);
         void multiplayer_player_move(int player, qreal x, qreal y);
@@ -55,6 +56,8 @@ class Scene : public QGraphicsScene {
         bool game_paused;
         QGraphicsTextItem* pause_text;
         QGraphicsTextItem* win_text;
+        QGraphicsTextItem* p1_text;
+        QGraphicsTextItem* p2_text;
         QGraphicsLineItem* middle_line;
         QPixmap background_image;
         bool background_image_set;
@@ -62,6 +65,7 @@ class Scene : public QGraphicsScene {
         void setup_middle_line();
         void setup_text(QGraphicsTextItem* text, QString content);
         void update_text(QGraphicsTextItem* text);
+        void update_player_text(QGraphicsTextItem* text, int player);
         void update_middle_line();
         void update_background_image();
         void player_won(int player);

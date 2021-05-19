@@ -166,3 +166,14 @@ void ConfigWindow::change_color(QString config_name, QLabel* value_label) {
 
     emit color_changed();
 }
+
+void ConfigWindow::show_window(bool multiplayer_active) {
+    // Prevents the player from changing the config during a multiplayer game
+    if (multiplayer_active) {
+        QMessageBox::warning(nullptr, "Config not available",
+                "You cannot change the config during a multiplayer game.");
+        return;
+    }
+
+    this->show();
+}
