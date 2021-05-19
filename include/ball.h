@@ -24,9 +24,10 @@ class Ball : public QObject, public QGraphicsRectItem {
         bool get_is_moving() const;
         void update_new_config();
         void color_changed();
+        void multiplayer_resize();
 
     signals:
-        void player_scored(quint8 player);
+        void player_scored(int player);
         void ball_bounce_paddle(QPointF ball_pos, qreal ball_angle, int player);
 
     public slots:

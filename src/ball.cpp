@@ -177,3 +177,9 @@ void Ball::sfx_volume_changed(qreal volume) {
 void Ball::color_changed() {
     this->setBrush(Config::get<QColor>("ball_color"));
 }
+
+void Ball::multiplayer_resize() {
+    Config::set("ball_width", 15.f * (Config::get<qreal>("board_width")) / 1920.f);
+    Config::set("ball_height", 15.f * (Config::get<qreal>("board_height")) / 1080.f);
+    update_new_config();
+}

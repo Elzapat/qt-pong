@@ -157,7 +157,7 @@ void Player::calculate_goal(QPointF ball_pos, qreal ball_angle) {
         // the board it bounces but keeps the same angle,
         // just opposite
         a = -a;
-        // Calculte the trajectory of the ball
+        // Calculate the trajectory of the ball
         // a is the coefficient of the linear function 
         // and b is the offset of the linear function
         b = start_y - (a * start_x);
@@ -181,4 +181,10 @@ void Player::set_goal(qreal new_goal) {
 
 bool Player::get_is_computer() const {
     return is_computer;
+}
+
+void Player::multiplayer_resize() {
+    Config::set("paddle_width", 10.f * (Config::get<qreal>("board_width")) / 1920.f);
+    Config::set("paddle_height", 100.f * (Config::get<qreal>("board_height")) / 1079.f);
+    update_new_config();
 }

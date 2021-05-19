@@ -1,6 +1,10 @@
 #include "../include/scene.h"
 
-Scene::Scene(QObject* parent) : QGraphicsScene(parent), game_paused(false), background_image_set(false) {
+Scene::Scene(QObject* parent) :
+        QGraphicsScene(parent),
+        game_paused(false),
+        background_image_set(false),
+        multiplayer_game(nullptr) {
     // Setting the background to black
     this->setBackgroundBrush(Qt::black);
 
@@ -45,17 +49,17 @@ Scene::Scene(QObject* parent) : QGraphicsScene(parent), game_paused(false), back
     update_timer->start((1.f / Config::get<qreal>("fps")) * 1000.f);
 
     // Connect to the signal the ball emits when a player scores
-    this->connect(ball, SIGNAL(player_scored(quint8)), this, SLOT(player_scored(quint8)));
+    this->connect(ball, SIGNAL(player_scored(int)), this, SLOT(player_scored(int)));
 
     // When the ball bounces off a paddle, we notify player 2
     // Only used when player 2 is a computer, the purpose of the SIGNAL/SLOT
     // is the compute the goal of the computer paddle
     // If the ball bounced off the player 2's paddle, just set its goal to 0;0
     this->connect(ball, &Ball::ball_bounce_paddle, p2, [this](QPointF p, qreal a, int player) {
-            if (!p2->get_is_computer()) return;
-            if (player == 2) p2->set_goal(0.f);
-            else p2->calculate_goal(p, a);
-            });
+        if (!p2->get_is_computer()) return;
+        if (player == 2) p2->set_goal(0.f);
+        else p2->calculate_goal(p, a);
+    });
 }
 
 Scene::~Scene() {
@@ -69,7 +73,7 @@ Scene::~Scene() {
 }
 
 void Scene::update() {
-    if (game_paused) return;
+    if (game_paused || multiplayer_game != nullptr) return;
 
     ball->move();
     ball->collision(p1->get_paddle(), p2->get_paddle());
@@ -81,7 +85,7 @@ void Scene::update() {
     QGraphicsScene::update(-b_w / 2, -b_h / 2, b_w, b_h);
 }
 
-void Scene::player_scored(quint8 player) {
+void Scene::player_scored(int player) {
     quint16 score_to_win = Config::get<quint16>("score_to_win");
     if (player == 1) {
         p1->scored(); 
@@ -97,6 +101,12 @@ void Scene::player_scored(quint8 player) {
 }
 
 void Scene::resize_event() {
+    if (multiplayer_game != nullptr) {
+        p1->multiplayer_resize();
+        p2->multiplayer_resize();
+        ball->multiplayer_resize();
+    }
+        
     p1->update_paddle();
     p2->update_paddle();
     p1->update_score_text();
@@ -107,7 +117,15 @@ void Scene::resize_event() {
 }
 
 void Scene::keyPressEvent(QKeyEvent* event) {
+    if (event->isAutoRepeat()) return;
+
     int pressed_key = event->key();
+
+    if (multiplayer_game != nullptr) {
+        multiplayer_game->key_event(pressed_key, "down");
+        return;
+    }
+
     if (!game_paused) {
         if (pressed_key == Config::get<int>("player_1_up", "controls"))
             p1->set_up_pressed(true);
@@ -137,7 +155,14 @@ void Scene::keyPressEvent(QKeyEvent* event) {
 }
 
 void Scene::keyReleaseEvent(QKeyEvent * event) {
+    if (event->isAutoRepeat()) return;
+
     int pressed_key = event->key();
+    
+    if (multiplayer_game != nullptr) {
+        multiplayer_game->key_event(pressed_key, "up");
+        return;
+    }
 
     if (pressed_key == Config::get<int>("player_1_up", "controls"))
         p1->set_up_pressed(false);
@@ -164,11 +189,13 @@ void Scene::setup_middle_line() {
 }
 
 void Scene::update_middle_line() {
+    // Update the middle line in case of a window resize
     quint16 b_h = Config::get<quint16>("board_height");
     middle_line->setLine(-10, -b_h, -10, b_h);
 }
 
 void Scene::setup_text(QGraphicsTextItem* text, QString content) {
+    // Create a text with the specified parameter
     int id = QFontDatabase::addApplicationFont("assets/fonts/bit5x5.ttf");
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
     QFont font(family);
@@ -185,6 +212,7 @@ void Scene::setup_text(QGraphicsTextItem* text, QString content) {
 }
 
 void Scene::update_text(QGraphicsTextItem* text) {
+    // Update the text in case of a configuration change
     quint16 text_size = Config::get<quint16>("text_size");
     text->setScale(text_size);
     QRectF rect = text->boundingRect();
@@ -196,9 +224,11 @@ void Scene::drawBackground(QPainter* painter, const QRectF& rect) {
     quint16 b_h = Config::get<quint16>("board_height");
 
     if (!background_image_set) {
+        // If there is no background image, draw a back background
         painter->setBrush((QBrush)Qt::black);
         painter->drawRect(-b_w / 2 - 5, -b_h / 2 - 5, b_w + 10, b_h + 10);
     } else {
+        // If there is a background image, fit it to the screen
         QRectF source(0.0, 0.0, background_image.width(), background_image.height());
         QRectF target(-b_w / 2, -b_h / 2, b_w, b_h);
         painter->drawPixmap(target, background_image, source);
@@ -206,6 +236,7 @@ void Scene::drawBackground(QPainter* painter, const QRectF& rect) {
 }
 
 void Scene::set_background_image() {
+    // Get an image to put in the background
     QString filename = QFileDialog::getOpenFileName(nullptr, tr("Open Image"),
             "", tr("Image Files (*.png *.jpg *.bmp)"));
     if (filename.isEmpty()) return;
@@ -232,9 +263,17 @@ void Scene::update_background_image() {
 }
 
 void Scene::update_new_config() {
+    // Prevents the player from changing the config during a multiplayer game
+    if (multiplayer_game != nullptr) {
+        QMessageBox::warning(nullptr, tr("Config not available"),
+                tr("You cannot change the config during a multiplayer game."));
+        return;
+    }
+
     quint16 b_w = Config::get<quint16>("board_width");
     quint16 b_h = Config::get<quint16>("board_height");
 
+    // Update all the game objects because the configuration changed
     ball->update_new_config();
     p1->update_new_config();
     p2->update_new_config();
@@ -244,12 +283,18 @@ void Scene::update_new_config() {
     QGraphicsScene::update(-b_w / 2, -b_h / 2, b_w, b_h);
 }
 
-void Scene::player_won(quint8 player) {
+void Scene::player_won(int player) {
+    // Display the player who won on the screen and reset the scores
     QString text = "Player " + QString::number(player) + " won!";
     win_text->setPlainText(tr(text.toStdString().c_str()));
     win_text->show();
     p1->set_score(0);
     p2->set_score(0);
+
+    // If the game is multiplayer, hide the text after 3 seconds
+    // because the ball launch that normally hides it is serverside
+    if (multiplayer_game != nullptr)
+        QTimer::singleShot(3000, [this] { win_text->hide(); });
 }
 
 void Scene::focusOutEvent(QFocusEvent* event) {
@@ -261,15 +306,14 @@ void Scene::focusOutEvent(QFocusEvent* event) {
 }
 
 void Scene::music_volume_changed(qreal volume) {
-    qDebug() << volume;
     background_music.setVolume(volume);
 }
 
-Ball* Scene::get_ball() {
+Ball* Scene::get_ball() const {
     return ball;
 }
 
-Player* Scene::get_player_2() {
+Player* Scene::get_player_2() const {
     return p2;
 }
 
@@ -281,4 +325,90 @@ void Scene::color_changed() {
     ball->color_changed();
     p1->color_changed();
     p2->color_changed();
+}
+
+void Scene::start_multiplayer_game(QTcpSocket* server) {
+    if (game_paused) {
+        pause_text->hide();
+        game_paused = false;
+    }
+
+    multiplayer_game = new MultiplayerGame(server);
+
+    // Reconfigure the game to a blank game
+    Config::reset_to_default();
+    update_new_config();
+    resize_event();
+    p1->set_score(0);
+    p2->set_score(0);
+
+    this->connect(multiplayer_game, SIGNAL(multiplayer_ball_move(qreal, qreal)), this, SLOT(multiplayer_ball_move(qreal, qreal)));
+    this->connect(multiplayer_game, SIGNAL(multiplayer_player_move(int, qreal, qreal)), this, SLOT(multiplayer_player_move(int, qreal, qreal)));
+    this->connect(multiplayer_game, SIGNAL(multiplayer_score(int)), this, SLOT(multiplayer_score(int)));
+    this->connect(multiplayer_game, SIGNAL(multiplayer_player_won(int)), this, SLOT(multiplayer_player_won(int)));
+    this->connect(multiplayer_game, SIGNAL(multiplayer_game_end()), this, SLOT(multiplayer_game_end()));
+
+    // Two seconds after game start, color the paddle of the player yellow
+    QTimer::singleShot(2000, [this] {
+        if (multiplayer_game == nullptr) return;
+        if (multiplayer_game->get_side() == 1)
+            p1->get_paddle()->set_color(QColor("#FFFF00"));
+        else if (multiplayer_game->get_side() == 2)
+            p2->get_paddle()->set_color(QColor("#FFFF00"));
+    });
+
+    // Enable the ability to disconnect from the window menus
+    emit enable_disconnect();
+}
+
+void Scene::multiplayer_ball_move(qreal x, qreal y) {
+    x *= Config::get<qreal>("board_width") / 1920.f;
+    y *= Config::get<qreal>("board_height") / 1080.f;
+    ball->setPos(x, y); 
+}
+
+void Scene::multiplayer_player_move(int player, qreal x, qreal y) {
+    x *= Config::get<qreal>("board_width") / 1920.f;
+    y *= Config::get<qreal>("board_height") / 1080.f;
+
+    if (player == 1)
+        p1->get_paddle()->setPos(x, y);
+    else if (player == 2)
+        p2->get_paddle()->setPos(x, y);
+}
+
+void Scene::multiplayer_score(int player) {
+    if (player == 1)
+        p1->scored();
+    else if (player == 2)
+        p2->scored();
+}
+
+void Scene::multiplayer_player_won(int player) {
+    player_won(player);
+}
+
+void Scene::multiplayer_game_end() {
+    // Disable the ability to disconnect from the game
+    emit disable_disconnect();
+
+    delete multiplayer_game;
+    multiplayer_game = nullptr;
+
+    // Reconfigure the game to not multiplayer
+    Config::reset_to_default();
+    update_new_config();
+    // color_changed();
+
+    p1->set_score(0);
+    p2->set_score(0);
+    // ball->reset();
+}
+
+bool Scene::is_multiplayer() {
+    return multiplayer_game != nullptr;
+}
+
+MultiplayerGame* Scene::get_multiplayer_game() const {
+    return multiplayer_game;
 }

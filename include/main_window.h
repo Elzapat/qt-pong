@@ -20,6 +20,8 @@ class MainWindow : public QMainWindow {
 
     public slots:
         void fullscreen();
+        void enable_disconnect();
+        void disable_disconnect();
 
     private:
         QMenu* config_menu;
@@ -38,6 +40,7 @@ class MainWindow : public QMainWindow {
         QAction* show_audio_config_window;
         QAction* show_multiplayer_window;
         QAction* set_p2_computer;
+        QAction* disconnect_socket;
 };
 
 #endif

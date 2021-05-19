@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     add_background_image = new QAction(tr("Select a background image"), this);
     remove_background_image = new QAction(tr("Remove the background image"), this);
     show_config_window = new QAction(tr("Configuration"), this);
-    show_controls_config_window = new QAction(tr("Controls"), this) ;
+    show_controls_config_window = new QAction(tr("Controls"), this);
     show_audio_config_window = new QAction(tr("Audio"), this);
     config_menu->addAction(add_background_image);
     config_menu->addAction(remove_background_image);
@@ -37,11 +37,15 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     // Instanciating and adding actions to the Game menu
     set_p2_computer = new QAction(tr("Set P2 as Computer"));
     show_multiplayer_window = new QAction(tr("Multiplayer"), this);
+    disconnect_socket = new QAction(tr("Disconnect from multiplayer game"), this);
     game_menu->addAction(set_p2_computer);
     game_menu->addAction(show_multiplayer_window);
+    game_menu->addAction(disconnect_socket);
 
     // Scene signals
     this->connect(scene, SIGNAL(fullscreen()), this, SLOT(fullscreen()));
+    this->connect(scene, SIGNAL(enable_disconnect()), this, SLOT(enable_disconnect()));
+    this->connect(scene, SIGNAL(disable_disconnect()), this, SLOT(disable_disconnect()));
     
     // Config menu actions
     this->connect(add_background_image, SIGNAL(triggered()), view->get_scene(), SLOT(set_background_image()));
@@ -58,7 +62,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
     // Game menu actions
     this->connect(set_p2_computer, SIGNAL(triggered()), view->get_scene()->get_player_2(), SLOT(set_computer()));
-    this->connect(show_multiplayer_window, SIGNAL(triggered()), multiplayer_window, SLOT(show_window()));
+    this->connect(show_multiplayer_window, &QAction::triggered, multiplayer_window, [this] { multiplayer_window->show_window(view->get_scene()->is_multiplayer()); });
+    this->connect(multiplayer_window, SIGNAL(start_game(QTcpSocket*)), view->get_scene(), SLOT(start_multiplayer_game(QTcpSocket*)));
 
     // Update the config with the current board height and width
     Config::set("board_width", view->width());
@@ -92,4 +97,12 @@ void MainWindow::fullscreen() {
         this->setWindowState(Qt::WindowNoState);
         this->setWindowState(Qt::WindowMaximized);
     }
+}
+
+void MainWindow::enable_disconnect() {
+    this->connect(disconnect_socket, SIGNAL(triggered()), view->get_scene()->get_multiplayer_game(), SLOT(disconnect_socket()));
+}
+
+void MainWindow::disable_disconnect() {
+    this->disconnect(disconnect_socket, SIGNAL(triggered()), view->get_scene()->get_multiplayer_game(), SLOT(disconnect_socket()));
 }

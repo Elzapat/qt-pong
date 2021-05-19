@@ -1,10 +1,7 @@
 #include "../include/multiplayer_window.h"
 
-static const QHostAddress HOST_ADDRESS("127.0.0.1");
-static const quint16 PORT = 2929;
-
-MultiplayerWindow::MultiplayerWindow(QWidget* parent) :
-    QWidget(parent), is_in_lobby(false), joined_lobby_id(-1) {
+MultiplayerWindow::MultiplayerWindow(QWidget* parent) : socket(nullptr),
+        QWidget(parent), is_in_lobby(false), joined_lobby_id(-1) {
 
     main_layout = new QGridLayout;
     lobbies_layout = new QVBoxLayout(this);
@@ -22,9 +19,6 @@ MultiplayerWindow::MultiplayerWindow(QWidget* parent) :
     main_layout->addWidget(refresh_button, 1, 1);
     main_layout->addWidget(reconnect_button, 2, 0, 1, 2);
 
-    this->connect(&socket, SIGNAL(readyRead()), this, SLOT(ready_read()));
-    this->connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socket_state_change(QAbstractSocket::SocketState)));
-    this->connect(&socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(socket_error(QAbstractSocket::SocketError)));
     this->connect(create_lobby_button, &QPushButton::clicked, this, [this]() {
         send_command("create_lobby");
     });
@@ -32,7 +26,7 @@ MultiplayerWindow::MultiplayerWindow(QWidget* parent) :
         send_command("lobbies");
     });
     this->connect(reconnect_button, &QPushButton::clicked, this, [this]() {
-        socket.connectToHost(HOST_ADDRESS, PORT);
+        socket->connectToHost(HOST_ADDRESS, PORT);
     });
 
     lobbies_box->setLayout(lobbies_layout);
@@ -51,23 +45,38 @@ MultiplayerWindow::~MultiplayerWindow() {
 }
 
 void MultiplayerWindow::ready_read() {
-    QByteArray data = socket.readAll();
+    QByteArray data = socket->readAll();
 
-    qDebug() << "reveived packet: " << data;
-    QStringList args;
-    for (QByteArray arg_bytes : data.split(';'))
-        args.append(QString::fromLocal8Bit(arg_bytes));
+    QStringList packets;
+    for (QByteArray packet_bytes : data.split('%'))
+        packets.append(QString::fromLocal8Bit(packet_bytes));
 
-    if (args[0] == "lobbies") {
-        int number = args[1].toInt();
-        args.pop_front(); args.pop_front();
-        show_lobbies(number, args);
-    } else if (args[0] == "join_lobby")
-        join_lobby(args[1].toInt());
-    else if (args[0] == "leave_lobby")
-        leave_lobby(args[1].toInt());
-    else if (args[0] == "lobby_died")
-        remove_lobby(args[1].toInt());
+    for (QString packet : packets) {
+        QStringList args = packet.split(';');
+
+        if (args[0] == "lobbies") {
+            int number = args[1].toInt();
+            args.pop_front(); args.pop_front();
+            show_lobbies(number, args);
+        } else if (args[0] == "join_lobby")
+            join_lobby(args[1].toInt());
+        else if (args[0] == "leave_lobby")
+            leave_lobby(args[1].toInt());
+        else if (args[0] == "lobby_died")
+            remove_lobby(args[1].toInt());
+        else if (args[0] == "game_start") {
+            emit start_game(socket);
+            this->hide();
+            this->disconnect(socket, SIGNAL(readyRead()), this, SLOT(ready_read()));
+            this->disconnect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(socket_error(QAbstractSocket::SocketError)));
+
+            refresh_timer->stop();
+            socket = nullptr;
+            for (int id : lobbies.keys())
+                remove_lobby(id);
+            lobbies.clear();
+        }
+    }
 }
 
 void MultiplayerWindow::send_command(QString command, QStringList args) {
@@ -75,7 +84,7 @@ void MultiplayerWindow::send_command(QString command, QStringList args) {
     for (const QString& arg : args)
         packet += arg + ';';
 
-    socket.write(packet.toLocal8Bit());
+    socket->write((packet + '%').toLocal8Bit());
 }
 
 void MultiplayerWindow::show_lobbies(int number, QStringList lobbies_str) {
@@ -120,7 +129,7 @@ void MultiplayerWindow::show_lobbies(int number, QStringList lobbies_str) {
     }
 
     // If a lobby is shown but is not in the list sent, delete it.
-    for (auto& [id, lobby] : lobbies.toStdMap()) {
+    for (int id : lobbies.keys()) {
         if (!lobby_ids.contains(id))
             remove_lobby(id);
     }
@@ -169,15 +178,27 @@ void MultiplayerWindow::socket_error(QAbstractSocket::SocketError error) {
 }
 
 void MultiplayerWindow::socket_state_change(QAbstractSocket::SocketState state) {
-    if (state == QAbstractSocket::UnconnectedState) {
+    if (state == QAbstractSocket::UnconnectedState)
         reconnect_button->show();
-    } else if (state == QAbstractSocket::ConnectedState) {
+    else if (state == QAbstractSocket::ConnectedState)
         reconnect_button->hide();
-    }
 }
 
-void MultiplayerWindow::show_window() {
-    socket.connectToHost(HOST_ADDRESS, PORT);
+void MultiplayerWindow::show_window(bool multiplayer_active) {
+    // if (multiplayer_active) {
+    //     QMessageBox::information(nullptr, tr("Info"), tr("You're already in a multiplayer game"));
+    //     return;
+    // }
+
+    if (socket == nullptr) {
+        socket = new QTcpSocket;
+        socket->connectToHost(HOST_ADDRESS, PORT);
+
+        this->connect(socket, SIGNAL(readyRead()), this, SLOT(ready_read()));
+        this->connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socket_state_change(QAbstractSocket::SocketState)));
+        this->connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(socket_error(QAbstractSocket::SocketError)));
+    }
+
     refresh_timer->start(3000);
     this->show();
 }

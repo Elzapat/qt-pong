@@ -27,3 +27,7 @@ void Paddle::update_new_config() {
 void Paddle::color_changed() {
     this->setBrush(Config::get<QColor>("paddle_color"));
 }
+
+void Paddle::set_color(QColor color) {
+    this->setBrush(color);
+}

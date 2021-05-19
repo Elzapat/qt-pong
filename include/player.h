@@ -32,6 +32,7 @@ class Player : public QObject {
         quint16 get_score() const;
         void scored();
         void color_changed();
+        void multiplayer_resize();
 
     public slots:
         void set_computer();

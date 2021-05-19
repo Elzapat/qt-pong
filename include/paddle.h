@@ -14,6 +14,7 @@ class Paddle : public QObject, public QGraphicsRectItem {
         ~Paddle();
         void update_new_config();
         void color_changed();
+        void set_color(QColor color);
 };
 
 #endif // PADDLE_H
