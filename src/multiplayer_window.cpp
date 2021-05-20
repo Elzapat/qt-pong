@@ -1,7 +1,8 @@
 #include "../include/multiplayer_window.h"
 
 MultiplayerWindow::MultiplayerWindow(QWidget* parent) : socket(nullptr),
-        QWidget(parent), is_in_lobby(false), joined_lobby_id(-1) {
+        QWidget(parent), is_in_lobby(false), joined_lobby_id(-1),
+        port(2929), host_address("127.0.0.1") {
 
     main_layout = new QGridLayout;
     lobbies_layout = new QVBoxLayout(this);
@@ -12,12 +13,14 @@ MultiplayerWindow::MultiplayerWindow(QWidget* parent) : socket(nullptr),
     create_lobby_button = new QPushButton(tr("Create Lobby"), this);
     refresh_button = new QPushButton(tr("Refresh"), this);
     reconnect_button = new QPushButton(tr("Reconnect"), this);
+    change_host_button = new QPushButton(tr("Change host"), this);
     reconnect_button->hide();
 
     main_layout->addWidget(lobbies_box, 0, 0, 1, 2);
     main_layout->addWidget(create_lobby_button, 1, 0);
     main_layout->addWidget(refresh_button, 1, 1);
-    main_layout->addWidget(reconnect_button, 2, 0, 1, 2);
+    main_layout->addWidget(change_host_button, 2, 0, 1, 2);
+    main_layout->addWidget(reconnect_button, 3, 0, 1, 2);
 
     this->connect(create_lobby_button, &QPushButton::clicked, this, [this]() {
         send_command("create_lobby");
@@ -25,6 +28,7 @@ MultiplayerWindow::MultiplayerWindow(QWidget* parent) : socket(nullptr),
     this->connect(refresh_button, &QPushButton::clicked, this, [this]() {
         send_command("lobbies");
     });
+    this->connect(change_host_button, &QPushButton::clicked, this, &MultiplayerWindow::change_host);
     this->connect(reconnect_button, &QPushButton::clicked, this, [this]() {
         socket->connectToHost(HOST_ADDRESS, PORT);
     });
@@ -207,4 +211,24 @@ void MultiplayerWindow::remove_lobby(int lobby_id) {
     lobbies_layout->removeWidget(lobbies[lobby_id].frame);
     delete lobbies[lobby_id].frame;
     lobbies.remove(lobby_id);
+}
+
+void MultiplayerWindow::change_host() {
+    QDialog dialog;
+    QFormLayout form(&dialog);
+
+    form.addRow(new QLabel("Change the host IP address and port."));
+    QLabel* host_address = new QLabel("Host address");
+    QLineEdit* address_input = new QLineEdit(&dialog);
+    QLabel* port = new QLabel("Port");
+    QLineEdit* port_input = new QLineEdit(&dialog);
+
+    form.addRow(host_address, address_input);
+    form.addRow(port, port_input);
+
+    QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                           Qt::Horizontal, &dialog);
+    form.addRow(&buttonBox);
+    this->connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
+    this->connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
 }

@@ -18,6 +18,7 @@ class MultiplayerWindow : public QWidget {
         void ready_read();
         void socket_error(QAbstractSocket::SocketError error);
         void socket_state_change(QAbstractSocket::SocketState state);
+        void change_host();
         void show_window(bool multiplayer_active);
 
     signals:
@@ -39,12 +40,15 @@ class MultiplayerWindow : public QWidget {
         void remove_lobby(int lobby_id);
         void lobby_button_click(int id);
         QTcpSocket* socket;
+        quint16 port;
+        QHostAddress host_address;
         QGridLayout* main_layout;
         QGroupBox* lobbies_box;
         QVBoxLayout* lobbies_layout;
         QPushButton* create_lobby_button;
         QPushButton* refresh_button;
         QPushButton* reconnect_button;
+        QPushButton* change_host_button;
         QTimer* refresh_timer;
         QMap<int, Lobby> lobbies;
         bool is_in_lobby;

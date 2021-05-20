@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     help_menu->addAction(test);
 
     // Instanciating and adding actions to the Game menu
-    set_p2_computer = new QAction(tr("Set P2 as Computer"));
+    set_p2_computer = new QAction(tr("Set/Unset P2 as Computer"));
     show_multiplayer_window = new QAction(tr("Multiplayer"), this);
     disconnect_socket = new QAction(tr("Disconnect from multiplayer game"), this);
     game_menu->addAction(set_p2_computer);
