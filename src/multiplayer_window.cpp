@@ -2,12 +2,15 @@
 
 MultiplayerWindow::MultiplayerWindow(QWidget* parent) : socket(nullptr),
         QWidget(parent), is_in_lobby(false), joined_lobby_id(-1),
-        port(2929), host_address("127.0.0.1") {
+        port(2929), host_address("54.36.100.67") {
 
     main_layout = new QGridLayout;
     lobbies_layout = new QVBoxLayout(this);
 
     main_layout->setSizeConstraint(QLayout::SetFixedSize);
+
+    current_host_label = new QLabel;
+    update_current_host_label();
 
     lobbies_box = new QGroupBox(tr("Lobbies"), this);
     create_lobby_button = new QPushButton(tr("Create Lobby"), this);
@@ -16,11 +19,12 @@ MultiplayerWindow::MultiplayerWindow(QWidget* parent) : socket(nullptr),
     change_host_button = new QPushButton(tr("Change host"), this);
     reconnect_button->hide();
 
-    main_layout->addWidget(lobbies_box, 0, 0, 1, 2);
-    main_layout->addWidget(create_lobby_button, 1, 0);
-    main_layout->addWidget(refresh_button, 1, 1);
-    main_layout->addWidget(change_host_button, 2, 0, 1, 2);
-    main_layout->addWidget(reconnect_button, 3, 0, 1, 2);
+    main_layout->addWidget(current_host_label, 0, 0, 1, 2);
+    main_layout->addWidget(lobbies_box, 1, 0, 1, 2);
+    main_layout->addWidget(create_lobby_button, 2, 0);
+    main_layout->addWidget(refresh_button, 2, 1);
+    main_layout->addWidget(change_host_button, 3, 0, 1, 2);
+    main_layout->addWidget(reconnect_button, 4, 0, 1, 2);
 
     this->connect(create_lobby_button, &QPushButton::clicked, this, [this]() {
         send_command("create_lobby");
@@ -29,9 +33,7 @@ MultiplayerWindow::MultiplayerWindow(QWidget* parent) : socket(nullptr),
         send_command("lobbies");
     });
     this->connect(change_host_button, &QPushButton::clicked, this, &MultiplayerWindow::change_host);
-    this->connect(reconnect_button, &QPushButton::clicked, this, [this]() {
-        socket->connectToHost(HOST_ADDRESS, PORT);
-    });
+    this->connect(reconnect_button, &QPushButton::clicked, this, &MultiplayerWindow::connect_to_host);
 
     lobbies_box->setLayout(lobbies_layout);
     this->setLayout(main_layout);
@@ -196,7 +198,7 @@ void MultiplayerWindow::show_window(bool multiplayer_active) {
 
     if (socket == nullptr) {
         socket = new QTcpSocket;
-        socket->connectToHost(HOST_ADDRESS, PORT);
+        connect_to_host();
 
         this->connect(socket, SIGNAL(readyRead()), this, SLOT(ready_read()));
         this->connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socket_state_change(QAbstractSocket::SocketState)));
@@ -218,17 +220,37 @@ void MultiplayerWindow::change_host() {
     QFormLayout form(&dialog);
 
     form.addRow(new QLabel("Change the host IP address and port."));
-    QLabel* host_address = new QLabel("Host address");
-    QLineEdit* address_input = new QLineEdit(&dialog);
-    QLabel* port = new QLabel("Port");
-    QLineEdit* port_input = new QLineEdit(&dialog);
+    QLabel host_address_label("Host address");
+    QLineEdit host_address_input(host_address.toString(), &dialog);
+    QLabel port_label("Port");
+    QLineEdit port_input(QString::number(port), &dialog);
+    port_input.setValidator(new QIntValidator(0, 65536, this));
 
-    form.addRow(host_address, address_input);
-    form.addRow(port, port_input);
+    form.addRow(&host_address_label, &host_address_input);
+    form.addRow(&port_label, &port_input);
 
     QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
-                           Qt::Horizontal, &dialog);
+            Qt::Horizontal, &dialog);
     form.addRow(&buttonBox);
     this->connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
     this->connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+
+    if (dialog.exec() == QDialog::Accepted) {
+        host_address = QHostAddress(host_address_input.text());
+        port = port_input.text().toInt();
+    }
+
+    update_current_host_label();
+    connect_to_host();
+}
+
+void MultiplayerWindow::connect_to_host() {
+    socket->connectToHost(host_address, port);
+    if (!socket->waitForConnected(2000))
+        socket_error(socket->error());
+}
+
+void MultiplayerWindow::update_current_host_label() {
+    current_host_label->setText("Current host: "
+            + host_address.toString() + ':' + QString::number(port));
 }

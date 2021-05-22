@@ -4,9 +4,6 @@
 #include <QtWidgets>
 #include <QtNetwork>
 
-static const QHostAddress HOST_ADDRESS("127.0.0.1");
-static const quint16 PORT = 2929;
-
 class MultiplayerWindow : public QWidget {
     Q_OBJECT
 
@@ -20,6 +17,7 @@ class MultiplayerWindow : public QWidget {
         void socket_state_change(QAbstractSocket::SocketState state);
         void change_host();
         void show_window(bool multiplayer_active);
+        void connect_to_host();
 
     signals:
         void start_game(QTcpSocket* server);
@@ -39,9 +37,11 @@ class MultiplayerWindow : public QWidget {
         void leave_lobby(int lobby_id);
         void remove_lobby(int lobby_id);
         void lobby_button_click(int id);
+        void update_current_host_label();
         QTcpSocket* socket;
         quint16 port;
         QHostAddress host_address;
+        QLabel* current_host_label;
         QGridLayout* main_layout;
         QGroupBox* lobbies_box;
         QVBoxLayout* lobbies_layout;

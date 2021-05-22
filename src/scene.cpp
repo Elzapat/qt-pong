@@ -137,6 +137,11 @@ void Scene::keyPressEvent(QKeyEvent* event) {
 
     int pressed_key = event->key();
 
+    if (pressed_key == Config::get<int>("fullscreen", "controls")) {
+        emit fullscreen();
+        return;
+    }
+
     if (multiplayer_game != nullptr) {
         multiplayer_game->key_event(pressed_key, "down");
         return;
@@ -165,9 +170,6 @@ void Scene::keyPressEvent(QKeyEvent* event) {
         pause_text->hide();
         game_paused = false;
     }
-
-    if (pressed_key == Config::get<int>("fullscreen", "controls"))
-        emit fullscreen();
 }
 
 void Scene::keyReleaseEvent(QKeyEvent * event) {
